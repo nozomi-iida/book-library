@@ -3,7 +3,6 @@ import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
 type FormData = {
-  email: string;
   title: string;
   url: string;
   description: string;
@@ -16,27 +15,6 @@ export default function Apply() {
 
   return (
     <View>
-      <Text>メールアドレス*</Text>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name='email'
-        rules={{ required: true }}
-        defaultValue=''
-      />
-      <View style={styles.errContainer}>
-        {errors.email && (
-          <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
-        )}
-      </View>
-
       <Text>タイトル*</Text>
       <Controller
         control={control}
