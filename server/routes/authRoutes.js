@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const { SingUpAuth } = require('../controllers/user');
+const { SignUpAuth, SignInAuth } = require('../controllers/user');
 
 const router = require('express').Router();
 
-router.post('/signup', SingUpAuth)
+router.post('/signup', SignUpAuth)
+router.post('/signin', SignInAuth)
 
 module.exports = router
