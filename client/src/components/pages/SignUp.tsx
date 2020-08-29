@@ -37,7 +37,7 @@ export default function SignUp({ navigation }: Props) {
   const [passwordErr, setPaswordErr] = useState(false);
   const onSubmit = async ({ username, email, password, passwordConfirm }: FormData) => {
     if(password === passwordConfirm) {
-      fetch('http://localhost:8000/signup', {
+      fetch('http://localhost:8000/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -118,6 +118,7 @@ export default function SignUp({ navigation }: Props) {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
+            secureTextEntry={true}  
           />
         )}
         name='password'
@@ -143,6 +144,7 @@ export default function SignUp({ navigation }: Props) {
             onChangeText={value => onChange(value)}
             value={value}
             onChange={() => setPaswordErr(false)}
+            secureTextEntry={true}  
           />
         )}
         name='passwordConfirm'
@@ -157,7 +159,7 @@ export default function SignUp({ navigation }: Props) {
       </View>
 
       <Button
-        title='ログイン'
+        title='新規登録'
         onPress={handleSubmit(onSubmit)}
         color='#f194ff'
       />

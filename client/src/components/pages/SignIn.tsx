@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -32,8 +32,9 @@ type Props = {
 
 export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
+  const [signInErr, setSignInErr] = useState(false);
   const onSubmit = async ({ email, password }: FormData) => {
-    fetch('http://localhost:8000/signin', {
+    fetch('http://localhost:8000/user/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,18 +45,22 @@ export default function SignIn({ navigation }: Props) {
       }),
     })
       .then(res => res.json())
-      .then(async (data) => {
-        if(data.token) {
-          await AsyncStorage.setItem('token', data.token)
-          navigation.replace('Main')
+      .then(async data => {
+        if (data.token) {
+          await AsyncStorage.setItem('token', data.token);
+          navigation.replace('Main');
         } else {
-          console.log(data.error)
+          console.log(data.error);
+          setSignInErr(true);
         }
       });
   };
 
   return (
     <View>
+      <View style={styles.errContainer}>
+        {signInErr && <Text style={{ color: '#FF0000' }}>パスワードまたはメールアドレスが違います。</Text>}
+      </View>
       <Text>メールアドレス*</Text>
       <Controller
         control={control}
@@ -65,6 +70,7 @@ export default function SignIn({ navigation }: Props) {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
+            onChange={() => setSignInErr(false)}
           />
         )}
         name='email'
@@ -86,6 +92,8 @@ export default function SignIn({ navigation }: Props) {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
+            onChange={() => setSignInErr(false)}
+            secureTextEntry={true}  
           />
         )}
         name='password'

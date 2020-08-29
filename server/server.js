@@ -22,11 +22,13 @@ require('./models/user');
 
 const requireToken = require('./middleware/requireToken');
 const AuthRoutes = require('./routes/authRoutes');
+const BookRoutes = require('./routes/bookRoutes')
 app.use(bodyparser.json());
-app.use(AuthRoutes);
+app.use('/user', AuthRoutes);
+app.use('/book', BookRoutes);
 
-app.get('/', requireToken, (req, res) => {
-  res.send({email: req.user.username})
+app.get('/user', requireToken, (req, res) => {
+  res.send({email: req.user.email, username: req.user.username})
 });
 
 app.listen(process.env.PORT || 8000, () => {

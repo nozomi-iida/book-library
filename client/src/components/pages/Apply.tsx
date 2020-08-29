@@ -1,6 +1,8 @@
 import React from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type FormData = {
   title: string;
@@ -9,9 +11,38 @@ type FormData = {
   reason: string;
 };
 
-export default function Apply() {
+type RootStackParamList = {
+  Permit: undefined;
+};
+
+type NavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Permit'
+>;
+
+type Props = {
+  navigation: NavigationProp;
+};
+
+export default function Apply({navigation}: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
-  const onSubmit = (data: FormData) => console.log(data);
+  const onSubmit = ({ title, description, reason, url }: FormData) => {
+    const apply = {
+      title,
+      description,
+      reason,
+      url,
+      status: 'apply',
+      review: 1,
+    };
+    axios
+      .post('http://localhost:8000/book/addApply', apply)
+      .then(res => {
+        res.data
+        navigation.replace('Permit')
+      })
+      .catch(error => console.log(error));
+  };
 
   return (
     <View>

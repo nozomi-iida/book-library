@@ -16,7 +16,7 @@ type Props = {
 export default function Permit({ navigation }: Props) {
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
-    fetch('http://localhost:8000/', {
+    fetch('http://localhost:8000/user/', {
       headers: new Headers({
         Authorization: 'Bearer ' + token,
       }),

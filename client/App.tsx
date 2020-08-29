@@ -1,33 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import Apply from './src/components/pages/Apply';
+import { StyleSheet, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignIn from './src/components/pages/SignIn';
 import SignUp from './src/components/pages/SignUp';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import Apply from './src/components/pages/Apply';
 import Permit from './src/components/pages/Permit';
 import Loading from './src/components/pages/Loading';
+import Read from './src/components/pages/Read';
+import FlatList from './src/components/atoms/FlatList';
 
 const Stack = createStackNavigator();
-
-const AuthScreen = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name='新規登録' component={SignUp} />
-      <Stack.Screen name='ログイン' component={SignIn} />
-    </Stack.Navigator>
-  );
-};
 
 const MainScreen = () => {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator>
+      <Tab.Screen name='Apply' component={Apply} />
       <Tab.Screen name='Permit' component={Permit} />
-      <Tab.Screen name='Home' component={Apply} />
+      <Tab.Screen name='Read' component={Read} />
     </Tab.Navigator>
   );
 };

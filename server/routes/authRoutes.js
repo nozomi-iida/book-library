@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const { SignUpAuth, SignInAuth } = require('../controllers/user');
 
 const router = require('express').Router();
