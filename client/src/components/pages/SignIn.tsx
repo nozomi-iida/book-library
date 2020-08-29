@@ -1,21 +1,61 @@
 import React from 'react';
-import { Text, View, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type FormData = {
   email: string;
   password: string;
 };
 
-export default function SignIn() {
+type RootStackParamList = {
+  新規登録: undefined;
+  Main: undefined;
+};
+
+type SignUpScreeenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  '新規登録' | 'Main'
+>;
+
+type Props = {
+  navigation: SignUpScreeenNavigationProp;
+};
+
+export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
-  const onSubmit = (data: FormData) => console.log(data);
+  const onSubmit = async ({ email, password }: FormData) => {
+    fetch('http://localhost:8000/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then(res => res.json())
+      .then(async (data) => {
+        if(data.token) {
+          await AsyncStorage.setItem('token', data.token)
+          navigation.replace('Main')
+        } else {
+          console.log(data.error)
+        }
+      });
+  };
 
   return (
     <View>
-      <Text style={{ textAlign: 'center', fontSize: 32, margin: 10 }}>
-        ログイン
-      </Text>
       <Text>メールアドレス*</Text>
       <Controller
         control={control}
@@ -63,7 +103,10 @@ export default function SignIn() {
         onPress={handleSubmit(onSubmit)}
         color='#f194ff'
       />
-      <TouchableOpacity style={{ marginTop: 10 }}>
+      <TouchableOpacity
+        style={{ marginTop: 10 }}
+        onPress={() => navigation.navigate('新規登録')}
+      >
         <Text>アカウントを作成しますか？</Text>
       </TouchableOpacity>
     </View>

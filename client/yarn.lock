@@ -1110,6 +1110,13 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@react-native-community/async-storage@1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.11.0.tgz#bf81b8813080846f150c67f531987c429b442166"
+  integrity sha512-Pq9LlmvtCEKAGdkyrgTcRxNh2fnHFykEj2qnRYijOl1pDIl2MkD5IxaXu5eOL0wgOtAl4U//ff4z40Td6XR5rw==
+  dependencies:
+    deep-assign "^3.0.0"
+
 "@react-native-community/cli-debugger-ui@^4.9.0":
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.9.0.tgz#4177764ba69243c97aa26829d59d9501acb2bd71"
@@ -1256,6 +1263,14 @@
   integrity sha512-J/CsHdIjYBRe81UUiLOoz9NSrQ91uP23Oe21QPCALInRHx+rfwo2oPl6Fn8xAa7n8Dtt2oQUGyF+g5d05cB74w==
   dependencies:
     nanoid "^3.1.12"
+
+"@react-navigation/stack@^5.9.0":
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-5.9.0.tgz#bf24607175bf502798cc4c832aa8a86e55f3b365"
+  integrity sha512-kt6M0ZLMyNKXfKi50n01bHg4/d8zp0Yh5QaQG4d1roWOqdV9ou1nFEK4l2yQ6XKH2lLSYswHElPDZUuWd+6XzA==
+  dependencies:
+    color "^3.1.2"
+    react-native-iphone-x-helper "^1.2.1"
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
@@ -1570,6 +1585,13 @@ available-typed-arrays@^1.0.0, available-typed-arrays@^1.0.2:
   integrity sha512-XWX3OX8Onv97LMk/ftVyBibpGwY5a8SmuxZPzeOxqmuEqUCOM9ZE+uIaD1VNJ5QnvU2UQusvmKbuM1FR8QWGfQ==
   dependencies:
     array-filter "^1.0.0"
+
+axios@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
+  integrity sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
+  dependencies:
+    follow-redirects "^1.10.0"
 
 babel-plugin-dynamic-import-node@^2.3.3:
   version "2.3.3"
@@ -2786,6 +2808,11 @@ find-up@^4.1.0:
   dependencies:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
+
+follow-redirects@^1.10.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
+  integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
 
 fontfaceobserver@^2.1.0:
   version "2.1.0"
@@ -4481,10 +4508,10 @@ react-native-appearance@~0.3.3:
     invariant "^2.2.4"
     use-subscription "^1.0.0"
 
-react-native-gesture-handler@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.7.0.tgz#0ef74a5ba836832e497dc49eb1ce58baa6c617e5"
-  integrity sha512-1CrjJf8Z6Iz2XWzfZknYtsm2sud5Lu/pLhhokkgBIKttxqGDtetDEVFDJOTJWJyKCrUPk0X5tnWi/diSF4q++w==
+react-native-gesture-handler@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.6.0.tgz#e9a4e1d0c7ac21eb0d6b6ec013e73f9c0c33a629"
+  integrity sha512-KulGCWKTxa6xBpPP4LWEPmmLqBqOe2jbtdlILOVF/dR4EgImiaBVrKdOHeRMyMzJOYAWxs5uDZsyA8hgSsm+lw==
   dependencies:
     "@egjs/hammerjs" "^2.0.17"
     hoist-non-react-statics "^2.3.1"

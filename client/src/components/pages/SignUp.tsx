@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -8,22 +8,63 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type FormData = {
   username: string;
   email: string;
   password: string;
+  passwordConfirm: string;
 };
 
-export default function SignUp() {
+type RootStackParamList = {
+  ログイン: undefined;
+  Main: undefined;
+};
+
+type SignInScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'ログイン' | 'Main'
+>;
+
+type Props = {
+  navigation: SignInScreenNavigationProp;
+};
+
+export default function SignUp({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
-  const onSubmit = (data: FormData) => console.log(data);
+  const [passwordErr, setPaswordErr] = useState(false);
+  const onSubmit = async ({ username, email, password, passwordConfirm }: FormData) => {
+    if(password === passwordConfirm) {
+      fetch('http://localhost:8000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      })
+        .then(res => res.json())
+        .then(async data => {
+          console.log(data);
+          try {
+            await AsyncStorage.setItem('token',data.token)
+            navigation.replace('Main')
+          } catch (error) {
+            console.log("error:",error)
+          }
+        });
+    } else {
+      setPaswordErr(true)
+    }
+  };
 
   return (
     <View>
-      <Text style={{ textAlign: 'center', fontSize: 32, margin: 10 }}>
-        新規登録
-      </Text>
       <Text>名前*</Text>
       <Controller
         control={control}
@@ -56,12 +97,15 @@ export default function SignUp() {
           />
         )}
         name='email'
-        rules={{ required: true }}
+        rules={{ required: true, pattern: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/ }}
         defaultValue=''
       />
       <View style={styles.errContainer}>
-        {errors.email && (
+        {errors.email &&errors.email.type === 'required' && (
           <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+        )}
+        {errors.email &&errors.email.type === 'pattern' && (
+          <Text style={{ color: '#FF0000' }}>メールアドレスが正しくありません。</Text>
         )}
       </View>
 
@@ -77,13 +121,39 @@ export default function SignUp() {
           />
         )}
         name='password'
-        rules={{ required: true }}
+        rules={{ required: true, minLength: 6 }}
         defaultValue=''
       />
       <View style={styles.errContainer}>
-        {errors.password && (
+        {errors.password &&errors.password.type === 'required' && (
           <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
         )}
+        {errors.password &&errors.password.type === 'minLength' && (
+          <Text style={{ color: '#FF0000' }}>パスワードは6文字以上設定してください。</Text>
+        )}
+      </View>
+
+      <Text>パスワード(確認用)*</Text>
+      <Controller
+        control={control}
+        render={({ onChange, onBlur, value }) => (
+          <TextInput
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+            onChange={() => setPaswordErr(false)}
+          />
+        )}
+        name='passwordConfirm'
+        rules={{ required: true, minLength: 6 }}
+        defaultValue=''
+      />
+      <View style={styles.errContainer}>
+        {errors.passwordConfirm && errors.passwordConfirm.type === 'required' && (
+          <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+        )}
+        {passwordErr && <Text style={{ color: '#FF0000' }}>パスワードが違います。</Text>}
       </View>
 
       <Button
@@ -91,7 +161,10 @@ export default function SignUp() {
         onPress={handleSubmit(onSubmit)}
         color='#f194ff'
       />
-      <TouchableOpacity style={{ marginTop: 10 }}>
+      <TouchableOpacity
+        style={{ marginTop: 10 }}
+        onPress={() => navigation.navigate('ログイン')}
+      >
         <Text>アカウントを既に持っていますか？</Text>
       </TouchableOpacity>
     </View>

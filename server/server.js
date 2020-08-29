@@ -26,7 +26,7 @@ app.use(bodyparser.json());
 app.use(AuthRoutes);
 
 app.get('/', requireToken, (req, res) => {
-  res.send('your email is ' + req.user.username)
+  res.send({email: req.user.username})
 });
 
 app.listen(process.env.PORT || 8000, () => {
