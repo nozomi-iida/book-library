@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type FormData = {
   title: string;
@@ -15,19 +16,30 @@ type RootStackParamList = {
   Permit: undefined;
 };
 
-type NavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Permit'
->;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'Permit'>;
 
 type Props = {
   navigation: NavigationProp;
 };
 
-export default function Apply({navigation}: Props) {
+export default function Apply({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
+  const [username, setUsername] = useState('');
+  const Boiler = async () => {
+    const token = await AsyncStorage.getItem('token');
+    axios
+      .get('http://localhost:8000/user/', {
+        headers: { Authorization: 'Bearer ' + token },
+      })
+      .then(res => setUsername(res.data.username))
+      .catch(error => console.log('Error: ' + error));
+  };
+  useEffect(() => {
+    Boiler();
+  }, []);
   const onSubmit = ({ title, description, reason, url }: FormData) => {
     const apply = {
+      username,
       title,
       description,
       reason,
@@ -38,8 +50,8 @@ export default function Apply({navigation}: Props) {
     axios
       .post('http://localhost:8000/book/addApply', apply)
       .then(res => {
-        res.data
-        navigation.replace('Permit')
+        res.data;
+        navigation.navigate('Permit');
       })
       .catch(error => console.log(error));
   };
