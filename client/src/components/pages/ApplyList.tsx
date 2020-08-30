@@ -21,7 +21,6 @@ type Props = {
 
 export default function ApplyList({navigation}: Props) {
   const [books, setBooks] = useState<IBook[]>([]);
-
   useEffect(() => {
     axios
       .get('http://localhost:8000/book/getApply')

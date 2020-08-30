@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import axios from 'axios';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
-import AsyncStorage from '@react-native-community/async-storage';
+import { UserStore } from '../../stores/user';
 
 type RootStackParamList = {
   Apply: { book: IBook };
@@ -26,20 +25,10 @@ export default function BookDetail({ navigation, route }: Props) {
   const dateMonth = date.getMonth() + 1;
   const dateDate = date.getDate();
   const dateYear = date.getFullYear();
-  const [username, setUsername] = useState('');
+  const user = useContext(UserStore);
 
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    axios
-      .get('http://localhost:8000/user/', {
-        headers: { Authorization: 'Bearer ' + token },
-      })
-      .then(res => setUsername(res.data.username))
-      .catch(error => console.log('Error: ' + error));
-  };
   useEffect(() => {
     setBook(route.params.book);
-    Boiler();
   }, []);
 
   const deleteBook = () => {
@@ -67,7 +56,7 @@ export default function BookDetail({ navigation, route }: Props) {
           <Text style={styles.text}>タイトル: {book.title}</Text>
           <Text style={styles.text}>本の簡単な詳細: {book.description}</Text>
           <Text style={{ marginBottom: 20 }}>読みたい理由: {book.reason}</Text>
-          {username === book.username && (
+          {user.username === book.username && (
             <>
               <View style={{ marginBottom: 10 }}>
                 <Button title='編集' onPress= {() => navigation.navigate('編集', {book: book})}  />

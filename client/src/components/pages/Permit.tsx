@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -14,22 +14,6 @@ type Props = {
 };
 
 export default function Permit({ navigation }: Props) {
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    fetch('http://localhost:8000/user/', {
-      headers: new Headers({
-        Authorization: 'Bearer ' + token,
-      }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      });
-  };
-
-  useEffect(() => {
-    Boiler();
-  }, []);
   const logout = () => {
     AsyncStorage.removeItem('token').then(() => {
       navigation.replace('ログイン');

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import { UserStore } from '../../stores/user';
 
 type FormData = {
   title: string;
@@ -24,22 +25,10 @@ type Props = {
 
 export default function ApplyForm({ navigation }: Props) {
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
-  const [username, setUsername] = useState('');
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    axios
-      .get('http://localhost:8000/user/', {
-        headers: { Authorization: 'Bearer ' + token },
-      })
-      .then(res => setUsername(res.data.username))
-      .catch(error => console.log('Error: ' + error));
-  };
-  useEffect(() => {
-    Boiler();
-  }, []);
+  const user = useContext(UserStore);
   const onSubmit = ({ title, description, reason, url }: FormData) => {
     const apply = {
-      username,
+      username: user.username,
       title,
       description,
       reason,

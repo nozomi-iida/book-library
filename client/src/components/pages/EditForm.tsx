@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 import { IBook } from '../../types/book';
+import { UserStore } from '../../stores/user';
 
 type FormData = {
   title: string;
@@ -30,24 +30,15 @@ type Props = {
 
 export default function EditForm({ navigation, route }: Props) {
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
-  const [username, setUsername] = useState('');
   const [book, setBook] = useState<IBook>();
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    axios
-      .get('http://localhost:8000/user/', {
-        headers: { Authorization: 'Bearer ' + token },
-      })
-      .then(res => setUsername(res.data.username))
-      .catch(error => console.log('Error: ' + error));
-  };
+  const user = useContext(UserStore);
+
   useEffect(() => {
     setBook(route.params.book);
-    Boiler();
   }, []);
   const onSubmit = ({ title, description, reason, url }: FormData) => {
     const apply = {
-      username,
+      username: user.username,
       title,
       description,
       reason,

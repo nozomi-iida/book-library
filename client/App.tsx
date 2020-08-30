@@ -11,6 +11,7 @@ import Read from './src/components/pages/Read';
 import ApplyList from './src/components/pages/ApplyList';
 import BookDetail from './src/components/pages/BookDetail';
 import EditForm from './src/components/pages/EditForm';
+import { UserProvider } from './src/stores/user';
 
 const Stack = createStackNavigator();
 
@@ -27,16 +28,18 @@ const MainScreen = () => {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Loading' component={Loading} />
-        <Stack.Screen name='新規登録' component={SignUp} />
-        <Stack.Screen name='ログイン' component={SignIn} />
-        <Stack.Screen name='申し込みフォーム' component={ApplyForm} />
-        <Stack.Screen name='編集' component={EditForm} />
-        <Stack.Screen name='詳細' component={BookDetail} />
-        <Stack.Screen name='Main' component={MainScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name='Loading' component={Loading} />
+          <Stack.Screen name='新規登録' component={SignUp} />
+          <Stack.Screen name='ログイン' component={SignIn} />
+          <Stack.Screen name='申し込みフォーム' component={ApplyForm} />
+          <Stack.Screen name='編集' component={EditForm} />
+          <Stack.Screen name='詳細' component={BookDetail} />
+          <Stack.Screen name='Main' component={MainScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }
