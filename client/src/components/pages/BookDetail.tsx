@@ -1,40 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import axios from 'axios';
 import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type RootStackParamList = {
   Apply: { book: IBook };
+  編集: { book: IBook };
 };
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Apply'>;
 
+type ScreeenNavigationProp = StackNavigationProp<RootStackParamList, '編集'>
+
 interface Props {
+  navigation: ScreeenNavigationProp
   route: ProfileScreenRouteProp;
 }
 
-export default function BookDetail({ route }: Props) {
+export default function BookDetail({ navigation, route }: Props) {
   const [book, setBook] = useState<IBook>();
-  const [date, setDate] = useState(new Date());
+  const date = new Date(route.params.book.createdAt);
   const dateMonth = date.getMonth() + 1;
   const dateDate = date.getDate();
   const dateYear = date.getFullYear();
+  const [username, setUsername] = useState('');
+
+  const Boiler = async () => {
+    const token = await AsyncStorage.getItem('token');
+    axios
+      .get('http://localhost:8000/user/', {
+        headers: { Authorization: 'Bearer ' + token },
+      })
+      .then(res => setUsername(res.data.username))
+      .catch(error => console.log('Error: ' + error));
+  };
   useEffect(() => {
-    setBook(route.params.book,);
-    setDate(new Date(route.params.book.createdAt));
+    setBook(route.params.book);
+    Boiler();
   }, []);
+
+  const deleteBook = () => {
+    console.log('hello');
+  };
 
   return (
     <View style={styles.container}>
       {book && (
         <View style={styles.card}>
-          <Text style={{fontWeight: 'bold', fontSize: 30, textAlign: 'center', marginBottom: 10}}>{book.status}</Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 30,
+              textAlign: 'center',
+              marginBottom: 10,
+            }}
+          >
+            {book.status}
+          </Text>
           <Text style={styles.text}>申請した人: {book.username}</Text>
-          <Text style={styles.text}>申請日: {dateYear}-{dateMonth}-{dateDate}</Text>
+          <Text style={styles.text}>
+            申請日: {dateYear}-{dateMonth}-{dateDate}
+          </Text>
           <Text style={styles.text}>タイトル: {book.title}</Text>
           <Text style={styles.text}>本の簡単な詳細: {book.description}</Text>
-          <Text style={styles.text}>読みたい理由: {book.reason}</Text>
+          <Text style={{ marginBottom: 20 }}>読みたい理由: {book.reason}</Text>
+          {username === book.username && (
+            <>
+              <View style={{ marginBottom: 10 }}>
+                <Button title='編集' onPress= {() => navigation.navigate('編集', {book: book})}  />
+              </View>
+            </>
+          )}
+          <Button title='許可する' onPress={deleteBook} />
         </View>
       )}
     </View>
@@ -63,6 +103,13 @@ const styles = StyleSheet.create({
     width: 290,
   },
   text: {
-    marginBottom: 10
-  }
+    marginBottom: 10,
+  },
+  fixToText: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    width: 80,
+  },
 });

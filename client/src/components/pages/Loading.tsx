@@ -20,7 +20,6 @@ type Props = {
 export default function Loading({ navigation }: Props) {
   const detectLogin = async () => {
     const token = await AsyncStorage.getItem('token');
-    console.log(token)
     if (token) {
       navigation.replace('Main');
     } else {

@@ -1,19 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignIn from './src/components/pages/SignIn';
 import SignUp from './src/components/pages/SignUp';
 import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
-import Apply from './src/components/pages/Apply';
+import ApplyForm from './src/components/pages/ApplyForm';
 import Permit from './src/components/pages/Permit';
 import Loading from './src/components/pages/Loading';
 import Read from './src/components/pages/Read';
-import FlatList from './src/components/atoms/FlatList';
 import ApplyList from './src/components/pages/ApplyList';
 import BookDetail from './src/components/pages/BookDetail';
+import EditForm from './src/components/pages/EditForm';
 
 const Stack = createStackNavigator();
 
@@ -35,19 +32,11 @@ export default function App() {
         <Stack.Screen name='Loading' component={Loading} />
         <Stack.Screen name='新規登録' component={SignUp} />
         <Stack.Screen name='ログイン' component={SignIn} />
-        <Stack.Screen name='申し込みフォーム' component={Apply} />
+        <Stack.Screen name='申し込みフォーム' component={ApplyForm} />
+        <Stack.Screen name='編集' component={EditForm} />
         <Stack.Screen name='詳細' component={BookDetail} />
         <Stack.Screen name='Main' component={MainScreen} />
-    </Stack.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingTop: 30,
-    height: '100%',
-  },
-});

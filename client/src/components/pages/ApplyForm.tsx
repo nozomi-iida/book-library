@@ -22,7 +22,7 @@ type Props = {
   navigation: NavigationProp;
 };
 
-export default function Apply({ navigation }: Props) {
+export default function ApplyForm({ navigation }: Props) {
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
   const [username, setUsername] = useState('');
   const Boiler = async () => {

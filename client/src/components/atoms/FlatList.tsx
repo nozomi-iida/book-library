@@ -11,7 +11,7 @@ import { IBook } from '../../types/book';
 
 type RootsStackParamList = {
   申し込みフォーム: undefined;
-  詳細: undefined;
+  詳細: { book: IBook } | undefined;
 };
 
 type ScreenNavigationProps = StackNavigationProp<
@@ -21,11 +21,10 @@ type ScreenNavigationProps = StackNavigationProp<
 
 interface FlatListProps {
   data: IBook[];
-  navigation: any;
+  navigation: ScreenNavigationProps;
 }
 
 const FlatListBasics = ({ data, navigation }: FlatListProps) => {
-  console.log(data);
   return (
     <View style={styles.container}>
       <FlatList

@@ -40,3 +40,9 @@ exports.DetailBook = (req, res) => {
     .then(book => res.json(book))
     .catch(error => res.ststus(400).json('Error: ' + error));
 };
+
+exports.DeleteBook = (req, res) => {
+  Book.findByIdAndDelete(req.params.id)
+    .then(() => res.json('Book Deleted!'))
+    .catch(error => res.ststus(400).json('Error: ' + error));
+};
