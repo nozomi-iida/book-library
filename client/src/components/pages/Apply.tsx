@@ -13,10 +13,10 @@ type FormData = {
 };
 
 type RootStackParamList = {
-  Permit: undefined;
+  Apply: undefined;
 };
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'Permit'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'Apply'>;
 
 type Props = {
   navigation: NavigationProp;
@@ -44,14 +44,14 @@ export default function Apply({ navigation }: Props) {
       description,
       reason,
       url,
-      status: 'apply',
+      status: '申請中',
       review: 1,
     };
     axios
       .post('http://localhost:8000/book/addApply', apply)
       .then(res => {
         res.data;
-        navigation.navigate('Permit');
+        navigation.navigate('Apply');
         setValue('title', '');
         setValue('url', '');
         setValue('description', '');
@@ -149,25 +149,12 @@ export default function Apply({ navigation }: Props) {
       <Button
         title='申請する'
         onPress={handleSubmit(onSubmit)}
-        color='#f194ff'
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  label: {
-    color: 'white',
-    margin: 20,
-    marginLeft: 0,
-  },
-  button: {
-    marginTop: 40,
-    color: 'white',
-    height: 40,
-    backgroundColor: '#ec5990',
-    borderRadius: 4,
-  },
   container: {
     flex: 1,
     justifyContent: 'center',

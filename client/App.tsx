@@ -13,6 +13,7 @@ import Loading from './src/components/pages/Loading';
 import Read from './src/components/pages/Read';
 import FlatList from './src/components/atoms/FlatList';
 import ApplyList from './src/components/pages/ApplyList';
+import BookDetail from './src/components/pages/BookDetail';
 
 const Stack = createStackNavigator();
 
@@ -28,26 +29,14 @@ const MainScreen = () => {
 };
 
 export default function App() {
-  const Tab = createBottomTabNavigator();
-  const [loggedIn, setLoggedin] = useState<boolean>(false);
-
-  const detectLogin = async () => {
-    const token = await AsyncStorage.getItem('token');
-    if (token) {
-      setLoggedin(true);
-    } else {
-      setLoggedin(false);
-    }
-  };
-  useEffect(() => {
-    detectLogin();
-  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name='Loading' component={Loading} />
         <Stack.Screen name='新規登録' component={SignUp} />
         <Stack.Screen name='ログイン' component={SignIn} />
+        <Stack.Screen name='申し込みフォーム' component={Apply} />
+        <Stack.Screen name='詳細' component={BookDetail} />
         <Stack.Screen name='Main' component={MainScreen} />
     </Stack.Navigator>
     </NavigationContainer>

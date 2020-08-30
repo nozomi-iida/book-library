@@ -6,25 +6,40 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { IBook } from '../../types/book';
 
-interface IData {
-  id: string,
-  title: string
-}
+type RootsStackParamList = {
+  申し込みフォーム: undefined;
+  詳細: undefined;
+};
+
+type ScreenNavigationProps = StackNavigationProp<
+  RootsStackParamList,
+  '申し込みフォーム' | '詳細'
+>
 
 interface FlatListProps {
-  data: IData[]
+  data: IBook[];
+  navigation: any;
 }
 
-const FlatListBasics = ({data}: FlatListProps) => {
+const FlatListBasics = ({ data, navigation }: FlatListProps) => {
+  console.log(data);
   return (
     <View style={styles.container}>
       <FlatList
         data={data}
+        keyExtractor={item => item._id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.cell}>
-            <Text style={styles.item}>{item.title}</Text>
-          </TouchableOpacity>
+          <View style={styles.cell}>
+            <TouchableOpacity
+              style={{ width: '100%' }}
+              onPress={() => navigation.navigate('詳細', {book: item})}
+            >
+              <Text style={styles.item}>{item.title}</Text>
+            </TouchableOpacity>
+          </View>
         )}
       />
     </View>

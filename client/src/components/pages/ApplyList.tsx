@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, Button } from 'react-native';
 import FlatList from '../atoms/FlatList';
 import axios from 'axios';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { IBook } from '../../types/book';
 
-interface IBook {
-  _id: string;
-  createdAt: string;
-  description: string;
-  reason: string;
-  review: number;
-  status: string;
-  title: string;
-  updatedAt: string;
-  url: string;
-  username: string;
+type RootsStackParamList = {
+  申し込みフォーム: undefined;
+  詳細: undefined;
+};
+
+type ScreenNavigationProps = StackNavigationProp<
+  RootsStackParamList,
+  '申し込みフォーム' | '詳細'
+>
+
+type Props = {
+  navigation: ScreenNavigationProps
 }
 
-export default function ApplyList() {
+export default function ApplyList({navigation}: Props) {
   const [books, setBooks] = useState<IBook[]>([]);
-  const booksData = books.map(book => {
-    return {
-      id: book._id,
-      title: book.title,
-    };
-  });
 
   useEffect(() => {
     axios
@@ -36,7 +33,11 @@ export default function ApplyList() {
 
   return (
     <View>
-      <FlatList data={booksData} />
+      <Button 
+        title='本を申し込む'
+        onPress={() => navigation.navigate('申し込みフォーム')}
+      />
+      <FlatList data={books} navigation={navigation}/>
     </View>
   );
 }
