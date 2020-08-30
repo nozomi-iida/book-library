@@ -1,46 +1,50 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 
-const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-   paddingTop: 22
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-});
+interface IData {
+  id: string,
+  title: string
+}
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+interface FlatListProps {
+  data: IData[]
+}
 
-const FlatListBasics = () => {
+const FlatListBasics = ({data}: FlatListProps) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={DATA}
-        renderItem={({item}) => (
-          <TouchableOpacity>
+        data={data}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.cell}>
             <Text style={styles.item}>{item.title}</Text>
           </TouchableOpacity>
         )}
       />
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+  },
+  cell: {
+    flexDirection: 'row',
+    borderStyle: 'solid',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#bbb',
+  },
+});
 
 export default FlatListBasics;

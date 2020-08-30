@@ -23,7 +23,7 @@ type Props = {
 };
 
 export default function Apply({ navigation }: Props) {
-  const { control, handleSubmit, errors } = useForm<FormData>();
+  const { control, setValue, handleSubmit, errors } = useForm<FormData>();
   const [username, setUsername] = useState('');
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -52,6 +52,10 @@ export default function Apply({ navigation }: Props) {
       .then(res => {
         res.data;
         navigation.navigate('Permit');
+        setValue('title', '');
+        setValue('url', '');
+        setValue('description', '');
+        setValue('reason', '');
       })
       .catch(error => console.log(error));
   };

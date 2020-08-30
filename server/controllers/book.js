@@ -10,3 +10,9 @@ exports.AddApply = (req, res) => {
     })
     .catch(error => {return res.status(422).send(error.message)});
 };
+
+exports.GetApply = (req, res) => {
+  Book.find()
+    .then(applyBooks => res.json(applyBooks))
+    .catch(error => res.ststus(400).json('Error: ' + errror));
+};

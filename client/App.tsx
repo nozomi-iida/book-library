@@ -12,6 +12,7 @@ import Permit from './src/components/pages/Permit';
 import Loading from './src/components/pages/Loading';
 import Read from './src/components/pages/Read';
 import FlatList from './src/components/atoms/FlatList';
+import ApplyList from './src/components/pages/ApplyList';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +20,7 @@ const MainScreen = () => {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator>
-      <Tab.Screen name='Apply' component={Apply} />
+      <Tab.Screen name='Apply' component={ApplyList} />
       <Tab.Screen name='Permit' component={Permit} />
       <Tab.Screen name='Read' component={Read} />
     </Tab.Navigator>
