@@ -37,6 +37,7 @@ export default function SignUp({ navigation }: Props) {
   const [passwordErr, setPaswordErr] = useState(false);
   const onSubmit = async ({ username, email, password, passwordConfirm }: FormData) => {
     if(password === passwordConfirm) {
+      // fetch('http://192.168.0.22:8000/user/signup', {
       fetch('http://localhost:8000/user/signup', {
         method: 'POST',
         headers: {

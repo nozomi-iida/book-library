@@ -22,10 +22,12 @@ exports.AddApply = (req, res) => {
   newApply
     .save()
     .then(() => {
-      res.json('add Apply!');
+      Book.find()
+        .then(books => res.json(books))
+        .catch(error => res.ststus(400).json('Error: ' + error));
     })
     .catch(error => {
-      return res.status(422).send(error.message);
+      return res.status(400).send(error.message);
     });
 };
 
@@ -43,6 +45,12 @@ exports.DetailBook = (req, res) => {
 
 exports.DeleteBook = (req, res) => {
   Book.findByIdAndDelete(req.params.id)
-    .then(() => res.json('Book Deleted!'))
-    .catch(error => res.ststus(400).json('Error: ' + error));
+    .then(() => {
+      Book.find()
+        .then(books => res.json(books))
+        .catch(error => res.ststus(400).json('Error: ' + error));
+    })
+    .catch(error => {
+      return res.status(400).send(error.message);
+    });
 };

@@ -16,10 +16,11 @@ export const UserStore = createContext<IUserElement>(initialState);
 
 export const UserProvider = ({ children }: JSX.ElementChildrenAttribute) => {
   const [user, setUser] = useState(initialState);
+  console.log(user);
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
     axios
-      .get('http://localhost:8000/user/', {
+      .get('http://192.168.0.22:8000/user/', {
         headers: { Authorization: 'Bearer ' + token },
       })
       .then(res => setUser(res.data))
@@ -27,7 +28,8 @@ export const UserProvider = ({ children }: JSX.ElementChildrenAttribute) => {
   };
 
   useEffect(() => {
-    Boiler();
+      Boiler();
+      console.log('hello');
   }, []);
 
   return <UserStore.Provider value={user}>{children}</UserStore.Provider>;

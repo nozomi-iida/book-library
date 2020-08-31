@@ -34,6 +34,7 @@ export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [signInErr, setSignInErr] = useState(false);
   const onSubmit = async ({ email, password }: FormData) => {
+    // fetch('http://192.168.0.22:8000/user/signin', {
     fetch('http://localhost:8000/user/signin', {
       method: 'POST',
       headers: {

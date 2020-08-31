@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, Text } from 'react-native';
 import FlatList from '../atoms/FlatList';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
+import Select from '../atoms/Select';
+import { useSelector } from 'react-redux';
 
 type RootsStackParamList = {
   申し込みフォーム: undefined;
@@ -20,16 +22,7 @@ type Props = {
 }
 
 export default function ApplyList({navigation}: Props) {
-  const [books, setBooks] = useState<IBook[]>([]);
-  useEffect(() => {
-    axios
-      .get('http://localhost:8000/book/getApply')
-      .then(response => {
-        setBooks(response.data);
-      })
-      .catch(error => console.log(error));
-  }, []);
-
+  const books = useSelector((state: any) => state.books);
   return (
     <View>
       <Button 

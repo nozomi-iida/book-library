@@ -1,11 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { IBook } from '../../types/book';
-import { UserStore } from '../../stores/user';
+import AsyncStorage from '@react-native-community/async-storage';
+import { useDispatch } from 'react-redux';
+import { deleteBook } from '../actions/book';
 
 type FormData = {
   title: string;
@@ -31,9 +33,21 @@ type Props = {
 export default function EditForm({ navigation, route }: Props) {
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
   const [book, setBook] = useState<IBook>();
-  const user = useContext(UserStore);
+  const [user, setUser] = useState({ username: '', email: '' });
+  const dispatch = useDispatch();
+
+  const Boiler = async () => {
+    const token = await AsyncStorage.getItem('token');
+    axios
+      .get('http://192.168.0.22:8000/user/', {
+        headers: { Authorization: 'Bearer ' + token },
+      })
+      .then(res => setUser(res.data))
+      .catch(error => console.log('Error: ' + error));
+  };
 
   useEffect(() => {
+    Boiler();
     setBook(route.params.book);
   }, []);
   const onSubmit = ({ title, description, reason, url }: FormData) => {
@@ -47,7 +61,7 @@ export default function EditForm({ navigation, route }: Props) {
       review: 1,
     };
     axios
-      .post('http://localhost:8000/book/addApply', apply)
+      .post('http://192.168.0.22:8000/book/addApply', apply)
       .then(res => {
         res.data;
         navigation.navigate('Apply');
@@ -60,13 +74,8 @@ export default function EditForm({ navigation, route }: Props) {
   };
 
   const deletePress = (id: string) => {
-    axios
-      .delete('http://localhost:8000/book/deleteBook/' + id)
-      .then(res => {
-        console.log(res.data);
-        navigation.navigate('Apply');
-      })
-      .catch(error => console.log(error));
+    dispatch(deleteBook(id));
+    navigation.navigate('Apply');
   };
 
   return (

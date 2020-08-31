@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
 import { UserStore } from '../../stores/user';
+import AsyncStorage from '@react-native-community/async-storage';
+import { useDispatch } from 'react-redux';
+import { addBook } from '../actions/book';
 
 type FormData = {
   title: string;
@@ -25,9 +27,26 @@ type Props = {
 
 export default function ApplyForm({ navigation }: Props) {
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
-  const user = useContext(UserStore);
+  const [user, setUser] = useState({username: '', email: ''});
+  const dispatch = useDispatch();
+
+  const Boiler = async () => {
+    const token = await AsyncStorage.getItem('token');
+    axios
+      // .get('http://192.168.0.22:8000/user/', {
+      .get('http://localhost:8000/user/', {
+        headers: { Authorization: 'Bearer ' + token },
+      })
+      .then(res => setUser(res.data))
+      .catch(error => console.log('Error: ' + error));
+  };
+
+  useEffect(() => {
+    Boiler();
+  });
+
   const onSubmit = ({ title, description, reason, url }: FormData) => {
-    const apply = {
+    const book = {
       username: user.username,
       title,
       description,
@@ -36,17 +55,12 @@ export default function ApplyForm({ navigation }: Props) {
       status: '申請中',
       review: 1,
     };
-    axios
-      .post('http://localhost:8000/book/addApply', apply)
-      .then(res => {
-        res.data;
-        navigation.navigate('Apply');
-        setValue('title', '');
-        setValue('url', '');
-        setValue('description', '');
-        setValue('reason', '');
-      })
-      .catch(error => console.log(error));
+    dispatch(addBook(book));
+    navigation.navigate('Apply');
+    setValue('title', '');
+    setValue('url', '');
+    setValue('description', '');
+    setValue('reason', '');
   };
 
   return (

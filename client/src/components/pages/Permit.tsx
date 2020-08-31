@@ -16,7 +16,7 @@ type Props = {
 export default function Permit({ navigation }: Props) {
   const logout = () => {
     AsyncStorage.removeItem('token').then(() => {
-      navigation.replace('ログイン');
+      navigation.navigate('ログイン');
     });
   };
   return (
