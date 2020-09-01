@@ -21,6 +21,7 @@ export const UserProvider = ({ children }: JSX.ElementChildrenAttribute) => {
     const token = await AsyncStorage.getItem('token');
     axios
       .get('http://192.168.0.22:8000/user/', {
+      // .get('http://localhost:8000/user/', {
         headers: { Authorization: 'Bearer ' + token },
       })
       .then(res => setUser(res.data))

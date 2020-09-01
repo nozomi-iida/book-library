@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { UserStore } from '../../stores/user';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useDispatch } from 'react-redux';
-import { addBook } from '../actions/book';
+import { addBook } from '../../actions/book';
 
 type FormData = {
   title: string;
@@ -33,8 +33,8 @@ export default function ApplyForm({ navigation }: Props) {
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
     axios
-      // .get('http://192.168.0.22:8000/user/', {
-      .get('http://localhost:8000/user/', {
+      .get('http://192.168.0.22:8000/user/', {
+      // .get('http://localhost:8000/user/', {
         headers: { Authorization: 'Bearer ' + token },
       })
       .then(res => setUser(res.data))

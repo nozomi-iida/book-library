@@ -14,7 +14,7 @@ import EditForm from './src/components/pages/EditForm';
 import FlatListBasics from './src/components/atoms/FlatList';
 import reduxStore from './src/stores/reduxStore';
 import { Provider, useDispatch } from 'react-redux';
-import { fetchBook } from './src/components/actions/book';
+import { fetchBook } from './src/actions/book';
 
 const Stack = createStackNavigator();
 

@@ -31,8 +31,8 @@ export default function BookDetail({ navigation, route }: Props) {
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
     axios
-      .get('http://localhost:8000/user/', {
-      // .get('http://192.168.0.22:8000/user/', {
+      // .get('http://localhost:8000/user/', {
+      .get('http://192.168.0.22:8000/user/', {
         headers: { Authorization: 'Bearer ' + token },
       })
       .then(res => setUser(res.data))
@@ -68,7 +68,7 @@ export default function BookDetail({ navigation, route }: Props) {
           </Text>
           <Text style={styles.text}>タイトル: {book.title}</Text>
           <Text style={styles.text}>本の簡単な詳細: {book.description}</Text>
-          <Text style={{ marginBottom: 20 }}>読みたい理由: {book.reason}</Text>
+          <Text style={{ marginBottom: 20, fontSize: 18 }}>読みたい理由: {book.reason}</Text>
           {user.username === book.username && (
             <>
               <View style={{ marginBottom: 10 }}>
@@ -90,22 +90,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    borderStyle: 'solid',
-    borderWidth: 0.5,
-    borderColor: '#bbb',
-    shadowColor: 'rgba(0,0,0,0.26)',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowRadius: 5,
-    shadowOpacity: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    borderRadius: 6,
+    elevation: 3,
+    backgroundColor: '#fff',
+    shadowOffset: {width: 1, height: 1},
+    shadowColor: '#333',
+    shadowOpacity: .3,
+    shadowRadius: 2,
+    marginHorizontal: 4,
+    marginVertical: 4,
     width: 290,
+    paddingHorizontal: 40,
+    paddingVertical: 20,
   },
   text: {
     marginBottom: 10,
+    fontSize: 18
   },
   fixToText: {
     flexDirection: 'row',

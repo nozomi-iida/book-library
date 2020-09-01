@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Button, Text } from 'react-native';
-import FlatList from '../atoms/FlatList';
-import axios from 'axios';
+import React from 'react';
+import { View, Button, Text, FlatList, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
-import Select from '../atoms/Select';
 import { useSelector } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type RootsStackParamList = {
   申し込みフォーム: undefined;
-  詳細: undefined;
+  詳細: { book: IBook } | undefined;
 };
 
 type ScreenNavigationProps = StackNavigationProp<
@@ -29,7 +27,36 @@ export default function ApplyList({navigation}: Props) {
         title='本を申し込む'
         onPress={() => navigation.navigate('申し込みフォーム')}
       />
-      <FlatList data={books} navigation={navigation}/>
+      <FlatList
+        data={books}
+        keyExtractor={item => item._id}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={{ width: '100%' }}
+            onPress={() => navigation.navigate('詳細', {book: item})}
+          >
+            <View style={styles.cell}>
+                <Text style={styles.item}>{item.title}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+  },
+  cell: {
+    flexDirection: 'row',
+    borderStyle: 'solid',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#bbb',
+  },
+});
