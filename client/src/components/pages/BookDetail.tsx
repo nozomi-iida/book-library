@@ -1,11 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
-import { UserStore } from '../../stores/user';
 import AsyncStorage from '@react-native-community/async-storage';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../../actions/user';
+import { IState } from '../../stores/reduxStore';
 
 type RootStackParamList = {
   Apply: { book: IBook };
@@ -27,16 +28,12 @@ export default function BookDetail({ navigation, route }: Props) {
   const dateMonth = date.getMonth() + 1;
   const dateDate = date.getDate();
   const dateYear = date.getFullYear();
-  const [user, setUser] = useState({username: '', email: ''});
+  const user = useSelector((state: IState) => state.user)
+  const dispatch = useDispatch();
+
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
-    axios
-      // .get('http://localhost:8000/user/', {
-      .get('http://192.168.0.22:8000/user/', {
-        headers: { Authorization: 'Bearer ' + token },
-      })
-      .then(res => setUser(res.data))
-      .catch(error => console.log('Error: ' + error));
+    dispatch(fetchUser(token));
   };
 
   useEffect(() => {

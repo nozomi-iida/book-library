@@ -9,13 +9,14 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { IBook } from '../../types/book';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteBook, updateBook } from '../../actions/book';
+import { fetchUser } from '../../actions/user';
+import { IState } from '../../stores/reduxStore';
 
 type FormData = {
   title: string;
@@ -39,21 +40,14 @@ type Props = {
 };
 
 export default function EditForm({ navigation, route }: Props) {
-  console.log(route.params.book)
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
   const [book, setBook] = useState<IBook>(route.params.book);
-  const [user, setUser] = useState({ username: '', email: '' });
+  const user = useSelector((state: IState) => state.user);
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
-    axios
-      .get('http://192.168.0.22:8000/user/', {
-      // .get('http://localhost:8000/user/', {
-        headers: { Authorization: 'Bearer ' + token },
-      })
-      .then(res => setUser(res.data))
-      .catch(error => console.log('Error: ' + error));
+    dispatch(fetchUser(token));
   };
 
   useEffect(() => {
