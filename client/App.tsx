@@ -8,13 +8,14 @@ import ApplyForm from './src/components/pages/ApplyForm';
 import Permit from './src/components/pages/Permit';
 import Loading from './src/components/pages/Loading';
 import Read from './src/components/pages/Read';
-import ApplyList from './src/components/pages/ApplyList';
+import Apply from './src/components/pages/Apply';
 import BookDetail from './src/components/pages/BookDetail';
 import EditForm from './src/components/pages/EditForm';
 import FlatListBasics from './src/components/atoms/FlatList';
 import reduxStore from './src/stores/reduxStore';
 import { Provider, useDispatch } from 'react-redux';
 import { fetchBook } from './src/actions/book';
+import PermitForm from './src/components/pages/PermitForm';
 
 const Stack = createStackNavigator();
 
@@ -31,7 +32,7 @@ const MainScreen = () => {
         options={{
           title: '申請',
         }}
-        component={ApplyList}
+        component={Apply}
       />
       <Tab.Screen
         name='permit'
@@ -106,6 +107,13 @@ export default function App() {
               title: '詳細',
             }}
             component={BookDetail}
+          />
+          <Stack.Screen
+            name='permitForm'
+            options={{
+              title: '許可',
+            }}
+            component={PermitForm}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -9,6 +9,7 @@ exports.AddApply = (req, res) => {
     url,
     status,
     review,
+    affiliateUrl,
   } = req.body;
   const newApply = new Book({
     username,
@@ -18,6 +19,7 @@ exports.AddApply = (req, res) => {
     url,
     status,
     review,
+    affiliateUrl,
   });
   newApply
     .save()
@@ -57,6 +59,18 @@ exports.DeleteBook = (req, res) => {
 
 exports.UpdateBook = (req, res) => {
   Book.findByIdAndUpdate(req.params.id, { $set: req.body })
+    .then(() => {
+      Book.find()
+        .then(books => res.json(books))
+        .catch(error => res.ststus(400).json('Error: ' + error));
+    })
+    .catch(error => {
+      return res.status(400).send(error.message);
+    });
+};
+
+exports.PermitBook = (req, res) => {
+  Book.findByIdAndUpdate(req.params.id, { $set: req.body})
     .then(() => {
       Book.find()
         .then(books => res.json(books))

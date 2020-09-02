@@ -47,6 +47,7 @@ export default function ApplyForm({ navigation }: Props) {
       url,
       status: '申請中',
       review: 1,
+      affiliateUrl: '',
     };
     dispatch(addBook(book));
     navigation.navigate('apply');

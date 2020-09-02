@@ -11,11 +11,12 @@ import { IState } from '../../stores/reduxStore';
 type RootStackParamList = {
   apply: { book: IBook };
   edit: { book: IBook };
+  permitForm: { book: IBook };
 };
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'apply'>;
 
-type ScreeenNavigationProp = StackNavigationProp<RootStackParamList, 'edit'>
+type ScreeenNavigationProp = StackNavigationProp<RootStackParamList, 'edit' | 'permitForm'>
 
 interface Props {
   navigation: ScreeenNavigationProp
@@ -40,10 +41,6 @@ export default function BookDetail({ navigation, route }: Props) {
     Boiler();
     setBook(route.params.book);
   }, []);
-
-  const deleteBook = () => {
-    console.log('hello');
-  };
 
   return (
     <View style={styles.container}>
@@ -73,7 +70,7 @@ export default function BookDetail({ navigation, route }: Props) {
               </View>
             </>
           )}
-          <Button title='許可する' onPress={deleteBook} />
+          <Button title='許可画面へ' onPress={() => navigation.navigate('permitForm', { book: book })} />
         </View>
       )}
     </View>

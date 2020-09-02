@@ -26,13 +26,13 @@ type FormData = {
 };
 
 type RootStackParamList = {
-  Apply: undefined;
+  apply: undefined;
   detail: { book: IBook };
 };
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'detail'>;
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'Apply'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'apply'>;
 
 type Props = {
   navigation: NavigationProp;
@@ -45,27 +45,20 @@ export default function EditForm({ navigation, route }: Props) {
   const user = useSelector((state: IState) => state.user);
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    dispatch(fetchUser(token));
-  };
-
-  useEffect(() => {
-    Boiler();
-  }, []);
 
   const onSubmit = ({ title, description, reason, url }: FormData) => {
     const newBook = {
-      username: user.username,
+      username: book.username,
       title,
       description,
       reason,
       url,
       status: '申請中',
       review: 1,
+      affiliateUrl: '',
     };
     dispatch(updateBook(book._id, newBook))
-    navigation.navigate('Apply');
+    navigation.navigate('apply');
     setValue('title', '');
     setValue('url', '');
     setValue('description', '');
@@ -74,7 +67,7 @@ export default function EditForm({ navigation, route }: Props) {
 
   const deletePress = (id: string) => {
     dispatch(deleteBook(id));
-    navigation.navigate('Apply');
+    navigation.navigate('apply');
   };
 
   return (

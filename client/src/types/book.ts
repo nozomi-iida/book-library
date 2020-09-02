@@ -9,5 +9,5 @@ export interface IBook {
   updatedAt: string;
   url: string;
   username: string;
-  afariateUrl?: string;
+  affiliateUrl?: string;
 }

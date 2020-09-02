@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Button, Text, FlatList, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
 import { useSelector } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { IState } from '../../stores/reduxStore';
 
 type RootsStackParamList = {
   applyForm: undefined;
@@ -19,8 +20,15 @@ type Props = {
   navigation: ScreenNavigationProps
 }
 
-export default function ApplyList({navigation}: Props) {
-  const books = useSelector((state: any) => state.books);
+export default function Apply({navigation}: Props) {
+  const books = useSelector((state: IState) => state.books);
+  const applyBooks: IBook[] = []
+  books.map((book: IBook) => {
+    if(book.status === '申請中') {
+      applyBooks.push(book);
+    }
+  })
+  console.log(applyBooks)
   return (
     <View>
       <Button 
@@ -28,7 +36,7 @@ export default function ApplyList({navigation}: Props) {
         onPress={() => navigation.navigate('applyForm')}
       />
       <FlatList
-        data={books}
+        data={applyBooks}
         keyExtractor={item => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity
