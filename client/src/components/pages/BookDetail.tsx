@@ -9,13 +9,13 @@ import { fetchUser } from '../../actions/user';
 import { IState } from '../../stores/reduxStore';
 
 type RootStackParamList = {
-  Apply: { book: IBook };
-  編集: { book: IBook };
+  apply: { book: IBook };
+  edit: { book: IBook };
 };
 
-type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Apply'>;
+type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'apply'>;
 
-type ScreeenNavigationProp = StackNavigationProp<RootStackParamList, '編集'>
+type ScreeenNavigationProp = StackNavigationProp<RootStackParamList, 'edit'>
 
 interface Props {
   navigation: ScreeenNavigationProp
@@ -69,7 +69,7 @@ export default function BookDetail({ navigation, route }: Props) {
           {user.username === book.username && (
             <>
               <View style={{ marginBottom: 10 }}>
-                <Button title='編集' onPress= {() => navigation.navigate('編集', {book: book})}  />
+                <Button title='編集' onPress= {() => navigation.navigate('edit', {book: book})}  />
               </View>
             </>
           )}

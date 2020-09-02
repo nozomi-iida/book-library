@@ -23,12 +23,30 @@ const MainScreen = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchBook());
-  }, [dispatch])
+  }, [dispatch]);
   return (
     <Tab.Navigator>
-      <Tab.Screen name='Apply' component={ApplyList} />
-      <Tab.Screen name='Permit' component={Permit} />
-      <Tab.Screen name='Read' component={Read} />
+      <Tab.Screen
+        name='apply'
+        options={{
+          title: '申請',
+        }}
+        component={ApplyList}
+      />
+      <Tab.Screen
+        name='permit'
+        options={{
+          title: '許可',
+        }}
+        component={Permit}
+      />
+      <Tab.Screen
+        name='read'
+        options={{
+          title: '読了',
+        }}
+        component={Read}
+      />
     </Tab.Navigator>
   );
 };
@@ -40,13 +58,55 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name='Loading' component={Loading} />
-          <Stack.Screen name='新規登録' component={SignUp} />
-          <Stack.Screen name='ログイン' component={SignIn} />
-          <Stack.Screen name='Main' component={MainScreen} />
-          <Stack.Screen name='申し込みフォーム' component={ApplyForm} />
-          <Stack.Screen name='編集' component={EditForm} />
-          <Stack.Screen name='詳細' component={BookDetail} />
+          <Stack.Screen
+            name='Loading'
+            options={{
+              title: '',
+            }}
+            component={Loading}
+          />
+          <Stack.Screen
+            name='signUp'
+            options={{
+              title: '新規登録',
+            }}
+            component={SignUp}
+          />
+          <Stack.Screen
+            name='signIn'
+            options={{
+              title: 'ログイン',
+            }}
+            component={SignIn}
+          />
+          <Stack.Screen
+            name='main'
+            options={{
+              title: 'Eazii Library',
+            }}
+            component={MainScreen}
+          />
+          <Stack.Screen
+            name='applyForm'
+            options={{
+              title: '申請フォーム',
+            }}
+            component={ApplyForm}
+          />
+          <Stack.Screen
+            name='edit'
+            options={{
+              title: '編集',
+            }}
+            component={EditForm}
+          />
+          <Stack.Screen
+            name='detail'
+            options={{
+              title: '詳細',
+            }}
+            component={BookDetail}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

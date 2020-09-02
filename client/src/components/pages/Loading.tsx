@@ -4,13 +4,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type RootStackParamList = {
-  ログイン: undefined;
-  Main: undefined;
+  signIn: undefined;
+  main: undefined;
 };
 
 type ScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'ログイン' | 'Main'
+  'signIn' | 'main'
 >;
 
 type Props = {
@@ -21,9 +21,9 @@ export default function Loading({ navigation }: Props) {
   const detectLogin = async () => {
     const token = await AsyncStorage.getItem('token');
     if (token) {
-      navigation.replace('Main');
+      navigation.replace('main');
     } else {
-      navigation.replace('ログイン');
+      navigation.replace('signIn');
     }
   };
   useEffect(() => {

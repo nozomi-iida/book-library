@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Text,
   View,
@@ -10,6 +10,8 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import { IState } from '../../stores/reduxStore';
+import { useSelector } from 'react-redux';
 
 type FormData = {
   email: string;
@@ -17,13 +19,13 @@ type FormData = {
 };
 
 type RootStackParamList = {
-  新規登録: undefined;
-  Main: undefined;
+  signUp: undefined;
+  main: undefined;
 };
 
 type SignUpScreeenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  '新規登録' | 'Main'
+  'signUp' | 'main'
 >;
 
 type Props = {
@@ -33,9 +35,10 @@ type Props = {
 export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [signInErr, setSignInErr] = useState(false);
+  const user = useSelector((state: any) => state.user);
   const onSubmit = async ({ email, password }: FormData) => {
-    fetch('http://192.168.0.22:8000/user/signin', {
-    // fetch('http://localhost:8000/user/signin', {
+    // fetch('http://192.168.0.22:8000/user/signin', {
+    fetch('http://localhost:8000/user/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +52,7 @@ export default function SignIn({ navigation }: Props) {
       .then(async data => {
         if (data.token) {
           await AsyncStorage.setItem('token', data.token);
-          navigation.replace('Main');
+          navigation.replace('main');
         } else {
           console.log(data.error);
           setSignInErr(true);
@@ -114,7 +117,7 @@ export default function SignIn({ navigation }: Props) {
       />
       <TouchableOpacity
         style={{ marginTop: 10 }}
-        onPress={() => navigation.navigate('新規登録')}
+        onPress={() => navigation.navigate('signUp')}
       >
         <Text>アカウントを作成しますか？</Text>
       </TouchableOpacity>

@@ -6,13 +6,13 @@ import { useSelector } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type RootsStackParamList = {
-  申し込みフォーム: undefined;
-  詳細: { book: IBook } | undefined;
+  applyForm: undefined;
+  detail: { book: IBook } | undefined;
 };
 
 type ScreenNavigationProps = StackNavigationProp<
   RootsStackParamList,
-  '申し込みフォーム' | '詳細'
+  'applyForm' | 'detail'
 >
 
 type Props = {
@@ -25,7 +25,7 @@ export default function ApplyList({navigation}: Props) {
     <View>
       <Button 
         title='本を申し込む'
-        onPress={() => navigation.navigate('申し込みフォーム')}
+        onPress={() => navigation.navigate('applyForm')}
       />
       <FlatList
         data={books}
@@ -33,7 +33,7 @@ export default function ApplyList({navigation}: Props) {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={{ width: '100%' }}
-            onPress={() => navigation.navigate('詳細', {book: item})}
+            onPress={() => navigation.navigate('detail', {book: item})}
           >
             <View style={styles.cell}>
                 <Text style={styles.item}>{item.title}</Text>

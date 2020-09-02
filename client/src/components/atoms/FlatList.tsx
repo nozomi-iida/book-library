@@ -10,13 +10,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
 
 type RootsStackParamList = {
-  申し込みフォーム: undefined;
-  詳細: { book: IBook } | undefined;
+  applyForm: undefined;
+  detail: { book: IBook } | undefined;
 };
 
 type ScreenNavigationProps = StackNavigationProp<
   RootsStackParamList,
-  '申し込みフォーム' | '詳細'
+  'applyForm' | 'detail'
 >
 
 interface FlatListProps {
@@ -34,7 +34,7 @@ const FlatListBasics = ({ data, navigation }: FlatListProps) => {
           <View style={styles.cell}>
             <TouchableOpacity
               style={{ width: '100%' }}
-              onPress={() => navigation.navigate('詳細', {book: item})}
+              onPress={() => navigation.navigate('detail', {book: item})}
             >
               <Text style={styles.item}>{item.title}</Text>
             </TouchableOpacity>

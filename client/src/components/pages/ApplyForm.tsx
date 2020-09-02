@@ -16,10 +16,10 @@ type FormData = {
 };
 
 type RootStackParamList = {
-  Apply: undefined;
+  apply: undefined;
 };
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'Apply'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'apply'>;
 
 type Props = {
   navigation: NavigationProp;
@@ -49,7 +49,7 @@ export default function ApplyForm({ navigation }: Props) {
       review: 1,
     };
     dispatch(addBook(book));
-    navigation.navigate('Apply');
+    navigation.navigate('apply');
     setValue('title', '');
     setValue('url', '');
     setValue('description', '');

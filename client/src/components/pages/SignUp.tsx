@@ -19,13 +19,13 @@ type FormData = {
 };
 
 type RootStackParamList = {
-  ログイン: undefined;
-  Main: undefined;
+  signIn: undefined;
+  main: undefined;
 };
 
 type SignInScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'ログイン' | 'Main'
+  'signIn' | 'main'
 >;
 
 type Props = {
@@ -37,8 +37,8 @@ export default function SignUp({ navigation }: Props) {
   const [passwordErr, setPaswordErr] = useState(false);
   const onSubmit = async ({ username, email, password, passwordConfirm }: FormData) => {
     if(password === passwordConfirm) {
-      fetch('http://192.168.0.22:8000/user/signup', {
-      // fetch('http://localhost:8000/user/signup', {
+      // fetch('http://192.168.0.22:8000/user/signup', {
+      fetch('http://localhost:8000/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function SignUp({ navigation }: Props) {
           console.log(data);
           try {
             await AsyncStorage.setItem('token',data.token)
-            navigation.replace('Main')
+            navigation.replace('main')
           } catch (error) {
             console.log("error:",error)
           }
@@ -166,7 +166,7 @@ export default function SignUp({ navigation }: Props) {
       />
       <TouchableOpacity
         style={{ marginTop: 10 }}
-        onPress={() => navigation.navigate('ログイン')}
+        onPress={() => navigation.navigate('signIn')}
       >
         <Text>アカウントを既に持っていますか？</Text>
       </TouchableOpacity>

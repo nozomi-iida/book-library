@@ -27,10 +27,10 @@ type FormData = {
 
 type RootStackParamList = {
   Apply: undefined;
-  詳細: { book: IBook };
+  detail: { book: IBook };
 };
 
-type ProfileScreenRouteProp = RouteProp<RootStackParamList, '詳細'>;
+type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'detail'>;
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Apply'>;
 
@@ -152,7 +152,7 @@ export default function EditForm({ navigation, route }: Props) {
             )}
           </View>
 
-          <Text>本の簡単な詳細*</Text>
+          <Text>本の簡単なdetail*</Text>
           <Controller
             control={control}
             render={({ onChange, onBlur, value }) => (
