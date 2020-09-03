@@ -12,11 +12,12 @@ type RootStackParamList = {
   apply: { book: IBook };
   edit: { book: IBook };
   permitForm: { book: IBook };
+  readForm: { book: IBook };
 };
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'apply'>;
 
-type ScreeenNavigationProp = StackNavigationProp<RootStackParamList, 'edit' | 'permitForm'>
+type ScreeenNavigationProp = StackNavigationProp<RootStackParamList, 'edit' | 'permitForm' | 'readForm'>
 
 interface Props {
   navigation: ScreeenNavigationProp
@@ -24,7 +25,7 @@ interface Props {
 }
 
 export default function BookDetail({ navigation, route }: Props) {
-  const [book, setBook] = useState<IBook>();
+  const [book, setBook] = useState<IBook>(route.params.book);
   const date = new Date(route.params.book.createdAt);
   const dateMonth = date.getMonth() + 1;
   const dateDate = date.getDate();
@@ -41,6 +42,28 @@ export default function BookDetail({ navigation, route }: Props) {
     Boiler();
     setBook(route.params.book);
   }, []);
+
+  const SatusButton = () => {
+    if(book.status === '申請中') {
+      return (
+        <>
+          <Button title='許可画面へ' onPress={() => navigation.navigate('permitForm', { book: book })} />
+        </>
+      )
+    } else if (book.status === '許可') {
+      return (
+        <>
+          <Button title='読了画面へ' onPress={() => navigation.navigate('readForm', { book: book })} />
+        </>
+      ) 
+    } else {
+      return (
+        <>
+          
+        </>
+      ) 
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -70,7 +93,7 @@ export default function BookDetail({ navigation, route }: Props) {
               </View>
             </>
           )}
-          <Button title='許可画面へ' onPress={() => navigation.navigate('permitForm', { book: book })} />
+          <SatusButton />
         </View>
       )}
     </View>

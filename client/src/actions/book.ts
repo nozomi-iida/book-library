@@ -23,7 +23,6 @@ export const fetchBook = () => async (dispatch: Dispatch) => {
 };
 
 export const addBook = (book: aciotnBook) => async (dispatch: Dispatch) => {
-  console.log(book);
   try {
     await axios
       .post('http://localhost:8000/book/addApply', book)
@@ -57,10 +56,19 @@ export const updateBook = (id: string, book: aciotnBook) => async (dispatch: Dis
 }
 
 export const permitBook = (id: string, book: any,) => async (dispatch: Dispatch) => {
-  console.log(book);
   try {
     await axios
       .post('http://localhost:8000/book/permitBook/' + id, book)
+      .then(res => dispatch({ type: 'FETCH_BOOKS', books: res.data }))
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const readBook = (id: string, book: any,) => async (dispatch: Dispatch) => {
+  try {
+    await axios
+      .post('http://localhost:8000/book/readBook/' + id, book)
       .then(res => dispatch({ type: 'FETCH_BOOKS', books: res.data }))
   } catch (error) {
     console.log(error);

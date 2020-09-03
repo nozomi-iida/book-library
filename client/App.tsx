@@ -11,11 +11,15 @@ import Read from './src/components/pages/Read';
 import Apply from './src/components/pages/Apply';
 import BookDetail from './src/components/pages/BookDetail';
 import EditForm from './src/components/pages/EditForm';
-import FlatListBasics from './src/components/atoms/FlatList';
 import reduxStore from './src/stores/reduxStore';
 import { Provider, useDispatch } from 'react-redux';
 import { fetchBook } from './src/actions/book';
 import PermitForm from './src/components/pages/PermitForm';
+import { Button, View } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import DrawerContent from './src/components/pages/DrawerContent';
+import ReadForm from './src/components/pages/ReadForm';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +56,15 @@ const MainScreen = () => {
   );
 };
 
+const DrawerScreen = () => {
+  const Drawer = createDrawerNavigator();
+  return (
+    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+      <Drawer.Screen name='main' component={MainScreen} />
+    </Drawer.Navigator>
+  );
+};
+
 const store = reduxStore();
 
 export default function App() {
@@ -59,6 +72,23 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
+          {/* <Stack.Screen
+            name='Drawer'
+            component={DrawerScreen}
+            options={{
+              title: 'Eazii Library',
+              headerLeft: () => (
+                <View style={{ marginLeft: 10 }}>
+                  <Icon.Button
+                    name='menuunfold'
+                    onPress={() => alert('This is a button!')}
+                    iconStyle={{ margin: 'auto', color: '#000' }}
+                    style={{ backgroundColor: '#fff' }}
+                  />
+                </View>
+              ),
+            }}
+          /> */}
           <Stack.Screen
             name='Loading'
             options={{
@@ -114,6 +144,13 @@ export default function App() {
               title: '許可',
             }}
             component={PermitForm}
+          />
+          <Stack.Screen
+            name='readForm'
+            options={{
+              title: '読了',
+            }}
+            component={ReadForm}
           />
         </Stack.Navigator>
       </NavigationContainer>

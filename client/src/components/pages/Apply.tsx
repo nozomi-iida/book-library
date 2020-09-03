@@ -22,13 +22,14 @@ type Props = {
 
 export default function Apply({navigation}: Props) {
   const books = useSelector((state: IState) => state.books);
+  console.log(books);
   const applyBooks: IBook[] = []
   books.map((book: IBook) => {
     if(book.status === '申請中') {
       applyBooks.push(book);
     }
   })
-  console.log(applyBooks)
+
   return (
     <View>
       <Button 

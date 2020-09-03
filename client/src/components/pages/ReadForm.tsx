@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
+import { Text, View, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -8,9 +8,10 @@ import { updateBook } from '../../actions/book';
 import { fetchUser } from '../../actions/user';
 import { IBook } from '../../types/book';
 import { RouteProp } from '@react-navigation/native';
+import { AirbnbRating } from 'react-native-ratings';
 
 type FormData = {
-  affiliateUrl: string;
+  review: number;
 };
 
 type RootStackParamList = {
@@ -27,7 +28,7 @@ type Props = {
   route: ProfileScreenRouteProp;
 };
 
-export default function PermitForm({ navigation, route }: Props) {
+export default function ReadForm({ navigation, route }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [book, setBook] = useState<IBook>(route.params.book);
   const dispatch = useDispatch();
@@ -41,48 +42,44 @@ export default function PermitForm({ navigation, route }: Props) {
     Boiler();
   }, []);
 
-  const onSubmit = ({ affiliateUrl }: FormData) => {
+  const onSubmit = ({ review }: FormData) => {
     const newBook = {
       username: book.username,
       title: book.title,
       description: book.description,
       reason: book.reason,
       url: book.url,
-      status: '許可',
-      review: 1,
-      affiliateUrl,
-    }; 
+      status: '読了',
+      review,
+      affiliateUrl: book.affiliateUrl,
+    };
     dispatch(updateBook(book._id, newBook));
-    navigation.navigate('apply')
+    navigation.navigate('apply');
   };
 
   return (
     <View>
-      <Text>アフェリエイトURL*</Text>
+      <Text>おすすめ度*</Text>
       <Controller
         control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
+        render={({ onChange }) => (
+          <AirbnbRating
+            showRating={false}
+            onFinishRating={value => onChange(value)}
+            defaultRating={0}
           />
         )}
-        name='affiliateUrl'
+        name='review'
         rules={{ required: true }}
         defaultValue=''
       />
       <View style={styles.errContainer}>
-        {errors.affiliateUrl && (
+        {errors.review && (
           <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
         )}
       </View>
 
-      <Button
-        title='許可する'
-        onPress={handleSubmit(onSubmit)}
-      />
+      <Button title='読了' onPress={handleSubmit(onSubmit)} />
     </View>
   );
 }
