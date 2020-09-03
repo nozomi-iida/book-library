@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { IState } from '../../stores/reduxStore';
 import { signOutuser } from '../../actions/user';
+import { AirbnbRating } from 'react-native-ratings';
+import book from '../../reducers/book';
 
 type RootsStackParamList = {
   applyForm: undefined;
@@ -49,6 +51,12 @@ export default function Apply({navigation}: Props) {
           >
             <View style={styles.cell}>
                 <Text style={styles.item}>{item.title}</Text>
+                <AirbnbRating
+                  showRating={false}
+                  defaultRating={item.review}
+                  isDisabled={false}
+                  size={20}
+                />
             </View>
           </TouchableOpacity>
         )}

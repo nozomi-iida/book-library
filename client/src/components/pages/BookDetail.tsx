@@ -93,7 +93,12 @@ export default function BookDetail({ navigation, route }: Props) {
               </View>
             </>
           )}
-          <SatusButton />
+          {book.status === '申請中' && (
+            <Button title='許可画面へ' onPress={() => navigation.navigate('permitForm', { book: book })} />
+          )}
+          {user.username === book.username && book.status === '許可' && (
+            <Button title='読了画面へ' onPress={() => navigation.navigate('readForm', { book: book })} />
+          )}
         </View>
       )}
     </View>

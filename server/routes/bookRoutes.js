@@ -6,7 +6,5 @@ router.get('/getApply', GetApply);
 router.get('/detailBook/:id', DetailBook);
 router.delete('/deleteBook/:id', DeleteBook);
 router.post('/updateBook/:id', UpdateBook);
-router.post('/permitBook/:id', PermitBook)
-router.post('/readBook/:id', ReadBook)
 
 module.exports = router

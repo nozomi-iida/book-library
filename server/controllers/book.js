@@ -68,27 +68,3 @@ exports.UpdateBook = (req, res) => {
       return res.status(400).send(error.message);
     });
 };
-
-exports.PermitBook = (req, res) => {
-  Book.findByIdAndUpdate(req.params.id, { $set: req.body})
-    .then(() => {
-      Book.find()
-        .then(books => res.json(books))
-        .catch(error => res.ststus(400).json('Error: ' + error));
-    })
-    .catch(error => {
-      return res.status(400).send(error.message);
-    });
-};
-
-exports.ReadBook = (req, res) => {
-  Book.findByIdAndUpdate(req.params.id, { $set: req.body})
-    .then(() => {
-      Book.find()
-        .then(books => res.json(books))
-        .catch(error => res.ststus(400).json('Error: ' + error));
-    })
-    .catch(error => {
-      return res.status(400).send(error.message);
-    });
-};

@@ -17,12 +17,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteBook, updateBook } from '../../actions/book';
 import { fetchUser } from '../../actions/user';
 import { IState } from '../../stores/reduxStore';
+import { AirbnbRating } from 'react-native-ratings';
 
 type FormData = {
   title: string;
   url: string;
   description: string;
   reason: string;
+  review: number;
 };
 
 type RootStackParamList = {
@@ -46,18 +48,18 @@ export default function EditForm({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const onSubmit = ({ title, description, reason, url }: FormData) => {
+  const onSubmit = ({ title, description, reason, url, review }: FormData) => {
     const newBook = {
       username: book.username,
       title,
       description,
       reason,
       url,
-      status: '申請中',
-      review: 1,
+      status: book.status,
+      review,
       affiliateUrl: '',
     };
-    dispatch(updateBook(book._id, newBook))
+    dispatch(updateBook(book._id, newBook));
     navigation.navigate('apply');
     setValue('title', '');
     setValue('url', '');
@@ -72,17 +74,17 @@ export default function EditForm({ navigation, route }: Props) {
 
   return (
     <View>
-      <Modal
-        animationType='slide'
-        transparent={true}
-        visible={modalVisible}
-      >
+      <Modal animationType='slide' transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>本当に削除しますか？</Text>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
               <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: '#2196F3', marginRight: 10 }}
+                style={{
+                  ...styles.openButton,
+                  backgroundColor: '#2196F3',
+                  marginRight: 10,
+                }}
                 onPress={() => {
                   deletePress(book._id);
                 }}
@@ -186,6 +188,29 @@ export default function EditForm({ navigation, route }: Props) {
               <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
             )}
           </View>
+          {book.status === '読了' && (
+            <>
+              <Text>おすすめ度*</Text>
+              <Controller
+                control={control}
+                render={({ onChange }) => (
+                  <AirbnbRating
+                    showRating={false}
+                    onFinishRating={value => onChange(value)}
+                    defaultRating={book.review}
+                  />
+                )}
+                name='review'
+                rules={{ required: true }}
+                defaultValue=''
+              />
+              <View style={styles.errContainer}>
+                {errors.review && (
+                  <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+                )}
+              </View>
+            </>
+          )}
           <View style={{ marginBottom: 10 }}>
             <Button title='更新する' onPress={handleSubmit(onSubmit)} />
           </View>
