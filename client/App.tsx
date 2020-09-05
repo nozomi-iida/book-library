@@ -11,6 +11,7 @@ import DrawerContent from './src/components/pages/DrawerContent';
 import { AuthContext } from './src/stores/authStore';
 import authReducer from './src/reducers/auth';
 import MainScreen from './src/components/screens/MainScreen';
+import Home from './src/components/pages/Home';
 
 const Stack = createStackNavigator();
 
@@ -71,6 +72,14 @@ export default function App() {
             </Drawer.Navigator>
           ) : (
             <Stack.Navigator>
+              <Stack.Screen
+                name='home'
+                options={{
+                  title: 'Eazii-library',
+                  headerShown: false,
+                }}
+                component={Home}
+              />
               <Stack.Screen
                 name='signIn'
                 options={{
