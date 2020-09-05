@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Text,
   View,
@@ -10,6 +10,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from '../../stores/authStore';
 
 type FormData = {
   username: string;
@@ -35,6 +36,7 @@ type Props = {
 export default function SignUp({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [passwordErr, setPaswordErr] = useState(false);
+  const {authDispatch} = useContext(AuthContext);
   const onSubmit = async ({ username, email, password, passwordConfirm }: FormData) => {
     if(password === passwordConfirm) {
       // fetch('http://192.168.0.22:8000/user/signup', {
@@ -54,7 +56,7 @@ export default function SignUp({ navigation }: Props) {
           console.log(data);
           try {
             await AsyncStorage.setItem('token',data.token)
-            navigation.replace('main')
+            authDispatch({ type: 'SIGNIN', id: email, token: data.token });
           } catch (error) {
             console.log("error:",error)
           }

@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
-import AsyncStorage from '@react-native-community/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../../actions/user';
-import { IState } from '../../stores/reduxStore';
+import { AuthContext } from '../../stores/authStore';
 
 type RootStackParamList = {
   apply: { book: IBook };
@@ -30,41 +27,7 @@ export default function BookDetail({ navigation, route }: Props) {
   const dateMonth = date.getMonth() + 1;
   const dateDate = date.getDate();
   const dateYear = date.getFullYear();
-  const user = useSelector((state: IState) => state.user)
-  const dispatch = useDispatch();
-
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    dispatch(fetchUser(token));
-  };
-
-  useEffect(() => {
-    Boiler();
-    setBook(route.params.book);
-  }, []);
-
-  const SatusButton = () => {
-    if(book.status === '申請中') {
-      return (
-        <>
-          <Button title='許可画面へ' onPress={() => navigation.navigate('permitForm', { book: book })} />
-        </>
-      )
-    } else if (book.status === '許可') {
-      return (
-        <>
-          <Button title='読了画面へ' onPress={() => navigation.navigate('readForm', { book: book })} />
-        </>
-      ) 
-    } else {
-      return (
-        <>
-          
-        </>
-      ) 
-    }
-  }
-
+  const {loginState} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       {book && (
@@ -86,7 +49,7 @@ export default function BookDetail({ navigation, route }: Props) {
           <Text style={styles.text}>タイトル: {book.title}</Text>
           <Text style={styles.text}>本の簡単な詳細: {book.description}</Text>
           <Text style={{ marginBottom: 20, fontSize: 18 }}>読みたい理由: {book.reason}</Text>
-          {user.username === book.username && (
+          {loginState.username === book.username && (
             <>
               <View style={{ marginBottom: 10 }}>
                 <Button title='編集' onPress= {() => navigation.navigate('edit', {book: book})}  />
@@ -96,7 +59,7 @@ export default function BookDetail({ navigation, route }: Props) {
           {book.status === '申請中' && (
             <Button title='許可画面へ' onPress={() => navigation.navigate('permitForm', { book: book })} />
           )}
-          {user.username === book.username && book.status === '許可' && (
+          {loginState.username === book.username && book.status === '許可' && (
             <Button title='読了画面へ' onPress={() => navigation.navigate('readForm', { book: book })} />
           )}
         </View>

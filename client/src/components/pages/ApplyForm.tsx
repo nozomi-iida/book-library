@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addBook } from '../../actions/book';
-import { fetchUser } from '../../actions/user';
-import { IState } from '../../stores/reduxStore';
+import { AuthContext } from '../../stores/authStore';
 
 type FormData = {
   title: string;
@@ -27,20 +25,11 @@ type Props = {
 
 export default function ApplyForm({ navigation }: Props) {
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
+  const {loginState} = useContext(AuthContext);
   const dispatch = useDispatch();
-  const user = useSelector((state: IState) => state.user);
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    dispatch(fetchUser(token));
-  };
-
-  useEffect(() => {
-    Boiler();
-  }, []);
-
   const onSubmit = ({ title, description, reason, url }: FormData) => {
     const book = {
-      username: user.username,
+      username: loginState.username,
       title,
       description,
       reason,

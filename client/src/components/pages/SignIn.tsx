@@ -10,8 +10,8 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
-import { IState } from '../../stores/reduxStore';
 import { useSelector } from 'react-redux';
+import { AuthContext } from '../../stores/authStore';
 
 type FormData = {
   email: string;
@@ -36,9 +36,10 @@ export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [signInErr, setSignInErr] = useState(false);
   const user = useSelector((state: any) => state.user);
+  const { useDispatch } = useContext(AuthContext);
   const onSubmit = async ({ email, password }: FormData) => {
     // fetch('http://192.168.0.22:8000/user/signin', {
-    fetch('http://localhost:8000/user/signin', {
+      fetch('http://localhost:8000/user/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,8 +53,9 @@ export default function SignIn({ navigation }: Props) {
       .then(async data => {
         if (data.token) {
           await AsyncStorage.setItem('token', data.token);
-          navigation.replace('main');
+          useDispatch({ type: 'SIGNIN', id: email, token: data.token });
         } else {
+          console.log('hello')
           console.log(data.error);
           setSignInErr(true);
         }
@@ -63,7 +65,11 @@ export default function SignIn({ navigation }: Props) {
   return (
     <View>
       <View style={styles.errContainer}>
-        {signInErr && <Text style={{ color: '#FF0000' }}>パスワードまたはメールアドレスが違います。</Text>}
+        {signInErr && (
+          <Text style={{ color: '#FF0000' }}>
+            パスワードまたはメールアドレスが違います。
+          </Text>
+        )}
       </View>
       <Text>メールアドレス*</Text>
       <Controller
@@ -97,7 +103,7 @@ export default function SignIn({ navigation }: Props) {
             onChangeText={value => onChange(value)}
             value={value}
             onChange={() => setSignInErr(false)}
-            secureTextEntry={true}  
+            secureTextEntry={true}
           />
         )}
         name='password'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Button, Text, FlatList, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
@@ -22,7 +22,6 @@ type Props = {
 
 export default function Apply({navigation}: Props) {
   const books = useSelector((state: IState) => state.books);
-  console.log(books);
   const applyBooks: IBook[] = []
   books.map((book: IBook) => {
     if(book.status === '申請中') {

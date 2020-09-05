@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { View, Button, Text, FlatList, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { IState } from '../../stores/reduxStore';
-import { signOutuser } from '../../actions/user';
 
 type RootsStackParamList = {
   applyForm: undefined;
@@ -22,14 +21,9 @@ type Props = {
   navigation: ScreenNavigationProps
 }
 
-export default function Apply({navigation}: Props) {
+export default function Permit({navigation}: Props) {
   const books = useSelector((state: IState) => state.books);
   const permitBooks: IBook[] = []
-  const dispatch =useDispatch();
-  const logout = () => {
-    dispatch(signOutuser());
-    navigation.replace('signIn');
-  };
 
   books.map((book: IBook) => {
     if(book.status === '許可') {
@@ -53,7 +47,6 @@ export default function Apply({navigation}: Props) {
           </TouchableOpacity>
         )}
       />
-      <Button title='ログアウト' onPress={() => logout()} />
     </View>
   );
 }
