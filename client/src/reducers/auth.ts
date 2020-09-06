@@ -1,6 +1,6 @@
 interface IRetrieveToken {
   type: 'RETRIEVE_TOKEN';
-  token: any;
+  token: string;
 }
 
 interface ISignIn {

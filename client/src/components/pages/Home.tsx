@@ -1,8 +1,23 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
-import RNFS from 'react-native-fs';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export default function Home({ navigation }: any) {
+type RootsStackParamList = {
+  signIn: undefined;
+  signUp: undefined;
+};
+
+type ScreenNavigationProps = StackNavigationProp<
+  RootsStackParamList,
+  'signIn' | 'signUp'
+>
+
+type Props = {
+  navigation: ScreenNavigationProps
+}
+
+
+export default function Home({ navigation }: Props) {
   return (
     <ImageBackground
       source={require('../../images/eazii-library.jpg')}

@@ -10,7 +10,6 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useSelector } from 'react-redux';
 import { AuthContext } from '../../stores/authStore';
 
 type FormData = {
@@ -35,11 +34,10 @@ type Props = {
 export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [signInErr, setSignInErr] = useState(false);
-  const user = useSelector((state: any) => state.user);
-  const { useDispatch } = useContext(AuthContext);
+  const { authDispatch } = useContext(AuthContext);
   const onSubmit = async ({ email, password }: FormData) => {
-    // fetch('http://192.168.0.22:8000/user/signin', {
-      fetch('http://localhost:8000/user/signin', {
+    fetch('http://192.168.0.22:8000/user/signin', {
+      // fetch('http://localhost:8000/user/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +51,7 @@ export default function SignIn({ navigation }: Props) {
       .then(async data => {
         if (data.token) {
           await AsyncStorage.setItem('token', data.token);
-          useDispatch({ type: 'SIGNIN', id: email, token: data.token });
+          authDispatch({ type: 'SIGNIN', id: email, token: data.token });
         } else {
           console.log('hello')
           console.log(data.error);

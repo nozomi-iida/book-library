@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Linking } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
 import { AuthContext } from '../../stores/authStore';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 type RootStackParamList = {
   apply: { book: IBook };
@@ -48,7 +50,10 @@ export default function BookDetail({ navigation, route }: Props) {
           </Text>
           <Text style={styles.text}>タイトル: {book.title}</Text>
           <Text style={styles.text}>本の簡単な詳細: {book.description}</Text>
-          <Text style={{ marginBottom: 20, fontSize: 18 }}>読みたい理由: {book.reason}</Text>
+          <Text style={styles.text}>読みたい理由: {book.reason}</Text>
+          {book.status === '許可' && (
+            <TouchableOpacity onPress={() => Linking.openURL(book.affiliateUrl)}><Text style={{marginBottom: 10,fontSize: 16}}>本を購入する<Icon name='arrowright' size={16} style={{ marginLeft: 10 }} /></Text></TouchableOpacity>
+          )}
           {loginState.username === book.username && (
             <>
               <View style={{ marginBottom: 10 }}>

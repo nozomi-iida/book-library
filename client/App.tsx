@@ -48,8 +48,9 @@ export default function App() {
       } catch (error) {
         console.log(error);
       }
-
-      authDispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
+      if(userToken !== null) {
+        authDispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
+      }
     }, 1000);
   }, []);
 

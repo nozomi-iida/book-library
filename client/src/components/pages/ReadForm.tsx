@@ -15,13 +15,13 @@ type FormData = {
 };
 
 type RootStackParamList = {
-  apply: undefined;
+  read: undefined;
   detail: { book: IBook };
 };
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'detail'>;
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'apply'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'read'>;
 
 type Props = {
   navigation: NavigationProp;
@@ -32,15 +32,6 @@ export default function ReadForm({ navigation, route }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [book, setBook] = useState<IBook>(route.params.book);
   const dispatch = useDispatch();
-
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    dispatch(fetchUser(token));
-  };
-
-  useEffect(() => {
-    Boiler();
-  }, []);
 
   const onSubmit = ({ review }: FormData) => {
     const newBook = {
@@ -54,7 +45,7 @@ export default function ReadForm({ navigation, route }: Props) {
       affiliateUrl: book.affiliateUrl,
     };
     dispatch(updateBook(book._id, newBook));
-    navigation.navigate('apply');
+    navigation.navigate('read');
   };
 
   return (

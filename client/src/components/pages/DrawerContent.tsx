@@ -5,7 +5,7 @@ import { AuthContext } from '../../stores/authStore';
 export default function DrawerContent (props: any) {
   const {authContext} = useContext(AuthContext);
   return (
-    <View>
+    <View style={{paddingVertical: 50}}>
       <Button
         title='ログアウト'
         onPress={() => {authContext.signOut()}}
