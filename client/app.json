@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "client",
-    "slug": "client",
+    "name": "Eazii-library",
+    "slug": "eazii-library",
+    "privacy": "public",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,10 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "jp.youardomain.myapp"
+    },
+    "android": {
+     "package": "jp.yourdomain.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }
