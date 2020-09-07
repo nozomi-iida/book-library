@@ -10,6 +10,8 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyparser.json())
 
+app.get('/', (req, res) => res.send('Hello World!'));
+
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 const connection = mongoose.connection;
