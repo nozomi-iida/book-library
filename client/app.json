@@ -22,7 +22,7 @@
       "bundleIdentifier": "jp.youardomain.myapp"
     },
     "android": {
-     "package": "jp.yourdomain.myapp"
+      "package": "jp.yourdomain.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

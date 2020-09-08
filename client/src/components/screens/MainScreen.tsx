@@ -20,15 +20,10 @@ export default ({ navigation }: any) => {
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
-      const { data } = await axios.get('http://192.168.0.22:8000/user/', {
-      // const { data } = await axios.get('http://localhost:8000/user/', {
-        headers: { Authorization: 'Bearer ' + token },
+      const { data } = await axios.get('https://frozen-bastion-73398.herokuapp.com/user', {
+        headers: { 
+          'Authorization': 'Bearer ' + token },
       });
-      axios
-        .get('http://192.168.0.22:8000/user/', {
-        // .get('http://localhost:8000/user/', {
-          headers: { Authorization: 'Bearer ' + token },
-        });
       authDispatch({ type: 'FETCH_USER', data: data });
     } catch (error) {
       console.log(error);

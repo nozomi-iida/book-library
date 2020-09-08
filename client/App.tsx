@@ -5,7 +5,7 @@ import SignUp from './src/components/pages/SignUp';
 import { createStackNavigator } from '@react-navigation/stack';
 import reduxStore from './src/stores/reduxStore';
 import { Provider } from 'react-redux';
-import { View, ActivityIndicator, AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerContent from './src/components/pages/DrawerContent';
 import { AuthContext } from './src/stores/authStore';
@@ -54,13 +54,13 @@ export default function App() {
     }, 1000);
   }, []);
 
-  if (loginState.isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size='large' />
-      </View>
-    );
-  }
+  // if (loginState.isLoading) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <ActivityIndicator size='large' />
+  //     </View>
+  //   );
+  // }
   return (
     <AuthContext.Provider value={{ authContext, loginState, authDispatch: authDispatch }}>
       <Provider store={store}>

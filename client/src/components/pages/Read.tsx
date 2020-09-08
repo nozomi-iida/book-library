@@ -43,7 +43,7 @@ export default function Read({navigation}: Props) {
             onPress={() => navigation.navigate('detail', {book: item})}
           >
             <View style={styles.cell}>
-                <Text style={styles.item} numberOfLines={1} ellipsizeMode="middle">{item.title}</Text>
+                <Text style={styles.item} numberOfLines={1} ellipsizeMode='tail'>{item.title}</Text>
                 <AirbnbRating
                   showRating={false}
                   defaultRating={item.review}
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   item: {
     padding: 10,
     fontSize: 18,
+    flex: 1,
   },
   cell: {
     flexDirection: 'row',
@@ -72,5 +73,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: '#bbb',
     justifyContent: 'space-between',
+    overflow: 'hidden'
   },
 });

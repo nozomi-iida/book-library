@@ -36,10 +36,10 @@ export default function SignIn({ navigation }: Props) {
   const [signInErr, setSignInErr] = useState(false);
   const { authDispatch } = useContext(AuthContext);
   const onSubmit = async ({ email, password }: FormData) => {
-    fetch('http://192.168.0.22:8000/user/signin', {
-      // fetch('http://localhost:8000/user/signin', {
+      fetch('https://frozen-bastion-73398.herokuapp.com/user/signin', {
       method: 'POST',
       headers: {
+        'Access-Control-Allow-Origin':'https://frozen-bastion-73398.herokuapp.com',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -53,7 +53,6 @@ export default function SignIn({ navigation }: Props) {
           await AsyncStorage.setItem('token', data.token);
           authDispatch({ type: 'SIGNIN', id: email, token: data.token });
         } else {
-          console.log('hello')
           console.log(data.error);
           setSignInErr(true);
         }

@@ -33,6 +33,8 @@ app.get('/user', requireToken, (req, res) => {
   res.send({email: req.user.email, username: req.user.username})
 });
 
-app.listen(process.env.PORT || 8000, () => {
+const port = process.env.PORT || 8000;
+
+app.listen(port, () => {
   console.log(`turn on server: http://192.168.0.22:${process.env.PORT || 8000}`);
 });

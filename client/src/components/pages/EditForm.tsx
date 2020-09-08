@@ -44,7 +44,6 @@ type Props = {
 export default function EditForm({ navigation, route }: Props) {
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
   const [book, setBook] = useState<IBook>(route.params.book);
-  const user = useSelector((state: IState) => state.user);
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
 
