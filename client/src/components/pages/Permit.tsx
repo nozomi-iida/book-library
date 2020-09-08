@@ -1,43 +1,68 @@
-import React, { useEffect } from 'react';
-import { View, Button } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import React from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { IBook } from '../../types/book';
+import { useSelector } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { IState } from '../../stores/reduxStore';
 
-type RootStackParamList = {
-  ログイン: undefined;
+type RootsStackParamList = {
+  applyForm: undefined;
+  detail: { book: IBook } | undefined;
+  signIn: undefined;
 };
 
-type ScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ログイン'>;
+type ScreenNavigationProps = StackNavigationProp<
+  RootsStackParamList,
+  'applyForm' | 'detail' | 'signIn'
+>
 
 type Props = {
-  navigation: ScreenNavigationProp;
-};
+  navigation: ScreenNavigationProps
+}
 
-export default function Permit({ navigation }: Props) {
-  const Boiler = async () => {
-    const token = await AsyncStorage.getItem('token');
-    fetch('http://localhost:8000/', {
-      headers: new Headers({
-        Authorization: 'Bearer ' + token,
-      }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      });
-  };
+export default function Permit({navigation}: Props) {
+  const books = useSelector((state: IState) => state.books);
+  const permitBooks: IBook[] = []
 
-  useEffect(() => {
-    Boiler();
-  }, []);
-  const logout = () => {
-    AsyncStorage.removeItem('token').then(() => {
-      navigation.replace('ログイン');
-    });
-  };
+  books.map((book: IBook) => {
+    if(book.status === '許可') {
+      permitBooks.push(book);
+    }
+  })
+
   return (
     <View>
-      <Button title='ログアウト' onPress={() => logout()} />
+      <FlatList
+        data={permitBooks}
+        keyExtractor={item => item._id}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={{ width: '100%' }}
+            onPress={() => navigation.navigate('detail', {book: item})}
+          >
+            <View style={styles.cell}>
+                <Text style={styles.item}>{item.title}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+  },
+  cell: {
+    flexDirection: 'row',
+    borderStyle: 'solid',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#bbb',
+  },
+});

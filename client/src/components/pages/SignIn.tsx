@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Text,
   View,
@@ -10,6 +10,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from '../../stores/authStore';
 
 type FormData = {
   email: string;
@@ -17,13 +18,13 @@ type FormData = {
 };
 
 type RootStackParamList = {
-  新規登録: undefined;
-  Main: undefined;
+  signUp: undefined;
+  main: undefined;
 };
 
 type SignUpScreeenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  '新規登録' | 'Main'
+  'signUp' | 'main'
 >;
 
 type Props = {
@@ -32,10 +33,13 @@ type Props = {
 
 export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
+  const [signInErr, setSignInErr] = useState(false);
+  const { authDispatch } = useContext(AuthContext);
   const onSubmit = async ({ email, password }: FormData) => {
-    fetch('http://localhost:8000/signin', {
+      fetch('https://frozen-bastion-73398.herokuapp.com/user/signin', {
       method: 'POST',
       headers: {
+        'Access-Control-Allow-Origin':'https://frozen-bastion-73398.herokuapp.com',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -44,18 +48,26 @@ export default function SignIn({ navigation }: Props) {
       }),
     })
       .then(res => res.json())
-      .then(async (data) => {
-        if(data.token) {
-          await AsyncStorage.setItem('token', data.token)
-          navigation.replace('Main')
+      .then(async data => {
+        if (data.token) {
+          await AsyncStorage.setItem('token', data.token);
+          authDispatch({ type: 'SIGNIN', id: email, token: data.token });
         } else {
-          console.log(data.error)
+          console.log(data.error);
+          setSignInErr(true);
         }
       });
   };
 
   return (
     <View>
+      <View style={styles.errContainer}>
+        {signInErr && (
+          <Text style={{ color: '#FF0000' }}>
+            パスワードまたはメールアドレスが違います。
+          </Text>
+        )}
+      </View>
       <Text>メールアドレス*</Text>
       <Controller
         control={control}
@@ -65,6 +77,7 @@ export default function SignIn({ navigation }: Props) {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
+            onChange={() => setSignInErr(false)}
           />
         )}
         name='email'
@@ -86,6 +99,8 @@ export default function SignIn({ navigation }: Props) {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
+            onChange={() => setSignInErr(false)}
+            secureTextEntry={true}
           />
         )}
         name='password'
@@ -105,7 +120,7 @@ export default function SignIn({ navigation }: Props) {
       />
       <TouchableOpacity
         style={{ marginTop: 10 }}
-        onPress={() => navigation.navigate('新規登録')}
+        onPress={() => navigation.navigate('signUp')}
       >
         <Text>アカウントを作成しますか？</Text>
       </TouchableOpacity>

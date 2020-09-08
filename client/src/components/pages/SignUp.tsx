@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Text,
   View,
@@ -10,6 +10,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from '../../stores/authStore';
 
 type FormData = {
   username: string;
@@ -19,13 +20,13 @@ type FormData = {
 };
 
 type RootStackParamList = {
-  ログイン: undefined;
-  Main: undefined;
+  signIn: undefined;
+  main: undefined;
 };
 
 type SignInScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'ログイン' | 'Main'
+  'signIn' | 'main'
 >;
 
 type Props = {
@@ -35,9 +36,10 @@ type Props = {
 export default function SignUp({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [passwordErr, setPaswordErr] = useState(false);
+  const {authDispatch} = useContext(AuthContext);
   const onSubmit = async ({ username, email, password, passwordConfirm }: FormData) => {
     if(password === passwordConfirm) {
-      fetch('http://localhost:8000/signup', {
+      fetch('https://frozen-bastion-73398.herokuapp.com/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ export default function SignUp({ navigation }: Props) {
           console.log(data);
           try {
             await AsyncStorage.setItem('token',data.token)
-            navigation.replace('Main')
+            authDispatch({ type: 'SIGNIN', id: email, token: data.token });
           } catch (error) {
             console.log("error:",error)
           }
@@ -118,6 +120,7 @@ export default function SignUp({ navigation }: Props) {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
+            secureTextEntry={true}  
           />
         )}
         name='password'
@@ -143,6 +146,7 @@ export default function SignUp({ navigation }: Props) {
             onChangeText={value => onChange(value)}
             value={value}
             onChange={() => setPaswordErr(false)}
+            secureTextEntry={true}  
           />
         )}
         name='passwordConfirm'
@@ -157,13 +161,13 @@ export default function SignUp({ navigation }: Props) {
       </View>
 
       <Button
-        title='ログイン'
+        title='新規登録'
         onPress={handleSubmit(onSubmit)}
         color='#f194ff'
       />
       <TouchableOpacity
         style={{ marginTop: 10 }}
-        onPress={() => navigation.navigate('ログイン')}
+        onPress={() => navigation.navigate('signIn')}
       >
         <Text>アカウントを既に持っていますか？</Text>
       </TouchableOpacity>
