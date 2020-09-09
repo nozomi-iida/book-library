@@ -76,7 +76,7 @@ export default function App() {
               <Stack.Screen
                 name='home'
                 options={{
-                  title: 'Eazii-library',
+                  title: 'Cv-library',
                   headerShown: false,
                 }}
                 component={Home}

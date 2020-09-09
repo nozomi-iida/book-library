@@ -20,7 +20,7 @@ type Props = {
 export default function Home({ navigation }: Props) {
   return (
     <ImageBackground
-      source={require('../../images/eazii-library.jpg')}
+      source={require('../../images/cv-library.jpg')}
       style={styles.image}
     >
       <View style={styles.container}>
@@ -29,7 +29,7 @@ export default function Home({ navigation }: Props) {
             ようこそ！
           </Text>
           <Text style={{ fontSize: 30, marginBottom: 40, fontWeight: 'bold' }}>
-            Eaziiチームの図書館へ
+            CV libraryへ！！
           </Text>
         </View>
         <View style={{ flexDirection: 'row' }}>

@@ -40,7 +40,7 @@ export default ({ navigation }: any) => {
         name='main'
         component={TabScreen}
         options={{
-          title: 'Eazii Library',
+          title: 'CV Library',
           headerLeft: () => (
             <View style={{ marginLeft: 10 }}>
               <Icon.Button
