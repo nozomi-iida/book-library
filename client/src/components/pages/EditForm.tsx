@@ -201,7 +201,7 @@ export default function EditForm({ navigation, route }: Props) {
                 )}
                 name='review'
                 rules={{ required: true }}
-                defaultValue=''
+                defaultValue={book.review}
               />
               <View style={styles.errContainer}>
                 {errors.review && (

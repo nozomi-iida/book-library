@@ -42,7 +42,7 @@ export default function Permit({navigation}: Props) {
             onPress={() => navigation.navigate('detail', {book: item})}
           >
             <View style={styles.cell}>
-                <Text style={styles.item}>{item.title}</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={styles.item}>{item.title}</Text>
             </View>
           </TouchableOpacity>
         )}
