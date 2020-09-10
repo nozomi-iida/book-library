@@ -34,7 +34,7 @@ export default function App() {
         } catch (error) {
           console.log(error);
         }
-        authDispatch({ type: 'SIGNOUT' });
+        authDispatch({ type: 'SIGNOUT'});
       }
     }),
     []
@@ -65,18 +65,16 @@ export default function App() {
     <AuthContext.Provider value={{ authContext, loginState, authDispatch: authDispatch }}>
       <Provider store={store}>
         <NavigationContainer>
-          {loginState.userToken ? (
             <Drawer.Navigator
               drawerContent={props => <DrawerContent {...props} />}
             >
               <Drawer.Screen name='main' component={MainScreen} />
             </Drawer.Navigator>
-          ) : (
-            <Stack.Navigator>
+            {/* <Stack.Navigator>
               <Stack.Screen
                 name='home'
                 options={{
-                  title: 'Cv-library',
+                  title: 'Cv-Library',
                   headerShown: false,
                 }}
                 component={Home}
@@ -95,8 +93,7 @@ export default function App() {
                 }}
                 component={SignUp}
               />
-            </Stack.Navigator>
-          )}
+            </Stack.Navigator> */}
         </NavigationContainer>
       </Provider>
     </AuthContext.Provider>

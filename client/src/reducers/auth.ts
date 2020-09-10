@@ -51,6 +51,8 @@ export default (prevState=initialLoginState, action: IAction) => {
       return {
         ...prevState,
         userToken: '',
+        email: '',
+        username: '',
         isLoading: false,
       } 
     case 'REGISTER':

@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 import { addBook } from '../../actions/book';
 import { AuthContext } from '../../stores/authStore';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 type FormData = {
   title: string;
@@ -25,8 +27,30 @@ type Props = {
 
 export default function ApplyForm({ navigation }: Props) {
   const { control, setValue, handleSubmit, errors } = useForm<FormData>();
-  const {loginState} = useContext(AuthContext);
+  const {loginState, authDispatch} = useContext(AuthContext);
   const dispatch = useDispatch();
+  const Boiler = async () => {
+    const token = await AsyncStorage.getItem('token');
+    if(token) {
+      try {
+        const { data } = await axios.get(
+          'https://frozen-bastion-73398.herokuapp.com/user',
+          {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            },
+          }
+        );
+        authDispatch({ type: 'FETCH_USER', data: data });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    Boiler();
+  }, []);
   const onSubmit = ({ title, description, reason, url }: FormData) => {
     const book = {
       username: loginState.username,

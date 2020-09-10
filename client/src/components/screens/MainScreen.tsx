@@ -12,21 +12,30 @@ import ReadForm from '../pages/ReadForm';
 import { AuthContext } from '../../stores/authStore';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import AuthScreen from './AuthScreen';
+import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 const Stack = createStackNavigator();
 
-export default ({ navigation }: any) => {
-  const {authDispatch} = useContext(AuthContext);
+export default ({ navigation }: DrawerContentComponentProps) => {
+  const { loginState, authDispatch } = useContext(AuthContext);
+  console.log(loginState);
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
-    try {
-      const { data } = await axios.get('https://frozen-bastion-73398.herokuapp.com/user', {
-        headers: { 
-          'Authorization': 'Bearer ' + token },
-      });
-      authDispatch({ type: 'FETCH_USER', data: data });
-    } catch (error) {
-      console.log(error);
+    if(token) {
+      try {
+        const { data } = await axios.get(
+          'https://frozen-bastion-73398.herokuapp.com/user',
+          {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            },
+          }
+        );
+        authDispatch({ type: 'FETCH_USER', data: data });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -58,9 +67,9 @@ export default ({ navigation }: any) => {
       <Stack.Screen
         name='applyForm'
         options={{
-          title: '新規登録',
+          title: loginState.userToken ? '本を追加' : 'ログイン',
         }}
-        component={ApplyForm}
+        component={loginState.userToken ? ApplyForm : AuthScreen}
       />
       <Stack.Screen
         name='edit'
