@@ -19,13 +19,13 @@ const Stack = createStackNavigator();
 
 export default ({ navigation }: DrawerContentComponentProps) => {
   const { loginState, authDispatch } = useContext(AuthContext);
-  console.log(loginState);
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
-    if(token) {
+    if (token) {
       try {
         const { data } = await axios.get(
-          'https://frozen-bastion-73398.herokuapp.com/user',
+          // 'https://frozen-bastion-73398.herokuapp.com/user',
+          'http://localhost:8000/user',
           {
             headers: {
               Authorization: 'Bearer ' + token,
@@ -51,16 +51,20 @@ export default ({ navigation }: DrawerContentComponentProps) => {
         options={{
           title: 'CV Library',
           headerLeft: () => (
-            <View style={{ marginLeft: 10 }}>
-              <Icon.Button
-                name='menuunfold'
-                onPress={() =>
-                  navigation.dispatch(DrawerActions.toggleDrawer())
-                }
-                iconStyle={{ margin: 'auto', color: '#000' }}
-                style={{ backgroundColor: '#fff' }}
-              />
-            </View>
+            <>
+              {loginState.userToken && (
+                <View style={{ marginLeft: 10 }}>
+                  <Icon.Button
+                    name='menuunfold'
+                    onPress={() =>
+                      navigation.dispatch(DrawerActions.toggleDrawer())
+                    }
+                    iconStyle={{ margin: 'auto', color: '#000' }}
+                    style={{ backgroundColor: '#fff' }}
+                  />
+                </View>
+              )}
+            </>
           ),
         }}
       />

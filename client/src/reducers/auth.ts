@@ -52,6 +52,7 @@ export default (prevState=initialLoginState, action: IAction) => {
         ...prevState,
         userToken: '',
         email: '',
+        image: '',
         username: '',
         isLoading: false,
       } 
@@ -65,6 +66,7 @@ export default (prevState=initialLoginState, action: IAction) => {
       return {
         ...prevState,
         email: action.data.email,
+        image: action.data.image,
         username: action.data.username,
         isLoading: false,
       }

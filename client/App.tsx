@@ -70,30 +70,6 @@ export default function App() {
             >
               <Drawer.Screen name='main' component={MainScreen} />
             </Drawer.Navigator>
-            {/* <Stack.Navigator>
-              <Stack.Screen
-                name='home'
-                options={{
-                  title: 'Cv-Library',
-                  headerShown: false,
-                }}
-                component={Home}
-              />
-              <Stack.Screen
-                name='signIn'
-                options={{
-                  title: 'ログイン',
-                }}
-                component={SignIn}
-              />
-              <Stack.Screen
-                name='signUp'
-                options={{
-                  title: '新規登録',
-                }}
-                component={SignUp}
-              />
-            </Stack.Navigator> */}
         </NavigationContainer>
       </Provider>
     </AuthContext.Provider>

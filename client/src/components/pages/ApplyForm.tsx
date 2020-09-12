@@ -34,7 +34,8 @@ export default function ApplyForm({ navigation }: Props) {
     if(token) {
       try {
         const { data } = await axios.get(
-          'https://frozen-bastion-73398.herokuapp.com/user',
+          // 'https://frozen-bastion-73398.herokuapp.com/user',
+          'http://localhost:8000/user',
           {
             headers: {
               Authorization: 'Bearer ' + token,

@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add @types/url-embed
+  /usr/local/bin/node /usr/local/bin/yarn add multer multer-gridfs-storage gridfs-tream method-override
 
 PATH: 
   /Users/nozomi/.rvm/gems/ruby-2.5.1/bin:/Users/nozomi/.rvm/gems/ruby-2.5.1@global/bin:/Users/nozomi/.rvm/rubies/ruby-2.5.1/bin:/Users/nozomi/.nodebrew/current/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/nozomi/.rvm/gems/ruby-2.5.1/bin:/Users/nozomi/.rvm/gems/ruby-2.5.1@global/bin:/Users/nozomi/.rvm/rubies/ruby-2.5.1/bin:/Users/nozomi/.nodebrew/current/bin:/Users/nozomi/.rvm/bin:/Users/nozomi/.rvm/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2furl-embed: Not found
+  Error: https://registry.yarnpkg.com/gridfs-tream: Not found
       at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66987:18)
       at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140748:22)
       at Request.emit (events.js:315:20)

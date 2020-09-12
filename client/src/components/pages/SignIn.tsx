@@ -36,10 +36,12 @@ export default function SignIn({ navigation }: Props) {
   const [signInErr, setSignInErr] = useState(false);
   const { authDispatch } = useContext(AuthContext);
   const onSubmit = async ({ email, password }: FormData) => {
-      fetch('https://frozen-bastion-73398.herokuapp.com/user/signin', {
+      // fetch('https://frozen-bastion-73398.herokuapp.com/user/signin', {
+      fetch('http://localhost:8000/user/signin', {
       method: 'POST',
       headers: {
-        'Access-Control-Allow-Origin':'https://frozen-bastion-73398.herokuapp.com',
+        // 'Access-Control-Allow-Origin':'https://frozen-bastion-73398.herokuapp.com',
+        'Access-Control-Allow-Origin':'http://localhost:8000/',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

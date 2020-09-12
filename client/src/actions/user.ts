@@ -6,7 +6,8 @@ export const fetchUser = (token: any) => async (dispatch: Dispatch) => {
   try {
     const {
       data,
-    } = await axios.get('https://frozen-bastion-73398.herokuapp.com/user/', {
+    // } = await axios.get('https://frozen-bastion-73398.herokuapp.com/user/', {
+    } = await axios.get('http://localhost:8000/user/', {
       headers: { Authorization: 'Bearer ' + token },
     });
     dispatch({ type: 'FETCH_USER', user: data });

@@ -2,8 +2,8 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 exports.SignUpAuth = (req, res) => {
-  const { username, email, password } = req.body;
-  const user = new User({ username, email, password });
+  const { username, image, email, password } = req.body;
+  const user = new User({ username, image, email, password });
   user
     .save()
     .then(() => {

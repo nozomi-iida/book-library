@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Text,
   View,
@@ -6,11 +6,15 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
+  Image,
+  Platform,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AuthContext } from '../../stores/authStore';
+import { askAsync, CAMERA_ROLL } from 'expo-permissions';
+import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 
 type FormData = {
   username: string;
@@ -36,16 +40,52 @@ type Props = {
 export default function SignUp({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [passwordErr, setPaswordErr] = useState(false);
-  const {authDispatch} = useContext(AuthContext);
-  const onSubmit = async ({ username, email, password, passwordConfirm }: FormData) => {
-    if(password === passwordConfirm) {
-      fetch('https://frozen-bastion-73398.herokuapp.com/user/signup', {
+  const { authDispatch } = useContext(AuthContext);
+  const [image, setImage] = useState('');
+  console.log(image);
+  const getPermissionAsync = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await askAsync(CAMERA_ROLL);
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    }
+  };
+  useEffect(() => {
+    getPermissionAsync();
+  }, []);
+  const _pickImage = async () => {
+    try {
+      let result = await launchImageLibraryAsync({
+        mediaTypes: MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [5, 5],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onSubmit = async ({
+    username,
+    email,
+    password,
+    passwordConfirm,
+  }: FormData) => {
+    if (password === passwordConfirm) {
+      // fetch('https://frozen-bastion-73398.herokuapp.com/user/signup', {
+      fetch('http://localhost:8000/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           username,
+          image,
           email,
           password,
         }),
@@ -54,14 +94,14 @@ export default function SignUp({ navigation }: Props) {
         .then(async data => {
           console.log(data);
           try {
-            await AsyncStorage.setItem('token',data.token)
+            await AsyncStorage.setItem('token', data.token);
             authDispatch({ type: 'SIGNIN', id: email, token: data.token });
           } catch (error) {
-            console.log("error:",error)
+            console.log('error:', error);
           }
         });
     } else {
-      setPaswordErr(true)
+      setPaswordErr(true);
     }
   };
 
@@ -87,6 +127,22 @@ export default function SignUp({ navigation }: Props) {
           <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
         )}
       </View>
+      <Text>画像*</Text>
+        <Text style={{textAlign: 'center'}}>
+          <TouchableOpacity onPress={_pickImage} >
+            <Image
+              source={{
+                uri: image ? image : require('../../images/noImage.jpeg'),
+              }}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 100,
+                backgroundColor: '#fff',
+              }}
+            />
+          </TouchableOpacity>
+        </Text>
       <Text>メールアドレス*</Text>
       <Controller
         control={control}
@@ -99,15 +155,20 @@ export default function SignUp({ navigation }: Props) {
           />
         )}
         name='email'
-        rules={{ required: true, pattern: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/ }}
+        rules={{
+          required: true,
+          pattern: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+        }}
         defaultValue=''
       />
       <View style={styles.errContainer}>
-        {errors.email &&errors.email.type === 'required' && (
+        {errors.email && errors.email.type === 'required' && (
           <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
         )}
-        {errors.email &&errors.email.type === 'pattern' && (
-          <Text style={{ color: '#FF0000' }}>メールアドレスが正しくありません。</Text>
+        {errors.email && errors.email.type === 'pattern' && (
+          <Text style={{ color: '#FF0000' }}>
+            メールアドレスが正しくありません。
+          </Text>
         )}
       </View>
 
@@ -120,7 +181,7 @@ export default function SignUp({ navigation }: Props) {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
-            secureTextEntry={true}  
+            secureTextEntry={true}
           />
         )}
         name='password'
@@ -128,11 +189,13 @@ export default function SignUp({ navigation }: Props) {
         defaultValue=''
       />
       <View style={styles.errContainer}>
-        {errors.password &&errors.password.type === 'required' && (
+        {errors.password && errors.password.type === 'required' && (
           <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
         )}
-        {errors.password &&errors.password.type === 'minLength' && (
-          <Text style={{ color: '#FF0000' }}>パスワードは6文字以上設定してください。</Text>
+        {errors.password && errors.password.type === 'minLength' && (
+          <Text style={{ color: '#FF0000' }}>
+            パスワードは6文字以上設定してください。
+          </Text>
         )}
       </View>
 
@@ -146,7 +209,7 @@ export default function SignUp({ navigation }: Props) {
             onChangeText={value => onChange(value)}
             value={value}
             onChange={() => setPaswordErr(false)}
-            secureTextEntry={true}  
+            secureTextEntry={true}
           />
         )}
         name='passwordConfirm'
@@ -154,10 +217,13 @@ export default function SignUp({ navigation }: Props) {
         defaultValue=''
       />
       <View style={styles.errContainer}>
-        {errors.passwordConfirm && errors.passwordConfirm.type === 'required' && (
-          <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+        {errors.passwordConfirm &&
+          errors.passwordConfirm.type === 'required' && (
+            <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+          )}
+        {passwordErr && (
+          <Text style={{ color: '#FF0000' }}>パスワードが違います。</Text>
         )}
-        {passwordErr && <Text style={{ color: '#FF0000' }}>パスワードが違います。</Text>}
       </View>
 
       <Button
