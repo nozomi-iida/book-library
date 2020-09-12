@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -106,139 +108,145 @@ export default function SignUp({ navigation }: Props) {
   };
 
   return (
-    <View>
-      <Text>名前*</Text>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
+      <ScrollView>
+        <View>
+          <Text>名前*</Text>
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                value={value}
+              />
+            )}
+            name='username'
+            rules={{ required: true }}
+            defaultValue=''
           />
-        )}
-        name='username'
-        rules={{ required: true }}
-        defaultValue=''
-      />
-      <View style={styles.errContainer}>
-        {errors.username && (
-          <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
-        )}
-      </View>
-      <Text>画像*</Text>
-      <View style={{ alignItems: 'center' }}>
-        <TouchableOpacity onPress={_pickImage}>
-          <Image
-            // source={{
-            //   uri: image ? image : require('../../images/noImage.jpeg'),
-            // }}
-            source={image ? {uri: image } : require('../../images/noImage.jpeg')}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 100,
-              backgroundColor: '#fff',
+          <View style={styles.errContainer}>
+            {errors.username && (
+              <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+            )}
+          </View>
+          <Text>画像*</Text>
+          <View style={{ alignItems: 'center' }}>
+            <TouchableOpacity onPress={_pickImage}>
+              <Image
+                // source={{
+                //   uri: image ? image : require('../../images/noImage.jpeg'),
+                // }}
+                source={
+                  image ? { uri: image } : require('../../images/noImage.jpeg')
+                }
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 100,
+                  backgroundColor: '#fff',
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+          <Text>メールアドレス*</Text>
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                value={value}
+              />
+            )}
+            name='email'
+            rules={{
+              required: true,
+              pattern: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
             }}
+            defaultValue=''
           />
-        </TouchableOpacity>
-      </View>
-      <Text>メールアドレス*</Text>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name='email'
-        rules={{
-          required: true,
-          pattern: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-        }}
-        defaultValue=''
-      />
-      <View style={styles.errContainer}>
-        {errors.email && errors.email.type === 'required' && (
-          <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
-        )}
-        {errors.email && errors.email.type === 'pattern' && (
-          <Text style={{ color: '#FF0000' }}>
-            メールアドレスが正しくありません。
-          </Text>
-        )}
-      </View>
+          <View style={styles.errContainer}>
+            {errors.email && errors.email.type === 'required' && (
+              <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+            )}
+            {errors.email && errors.email.type === 'pattern' && (
+              <Text style={{ color: '#FF0000' }}>
+                メールアドレスが正しくありません。
+              </Text>
+            )}
+          </View>
 
-      <Text>パスワード*</Text>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-            secureTextEntry={true}
+          <Text>パスワード*</Text>
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                value={value}
+                secureTextEntry={true}
+              />
+            )}
+            name='password'
+            rules={{ required: true, minLength: 6 }}
+            defaultValue=''
           />
-        )}
-        name='password'
-        rules={{ required: true, minLength: 6 }}
-        defaultValue=''
-      />
-      <View style={styles.errContainer}>
-        {errors.password && errors.password.type === 'required' && (
-          <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
-        )}
-        {errors.password && errors.password.type === 'minLength' && (
-          <Text style={{ color: '#FF0000' }}>
-            パスワードは6文字以上設定してください。
-          </Text>
-        )}
-      </View>
+          <View style={styles.errContainer}>
+            {errors.password && errors.password.type === 'required' && (
+              <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+            )}
+            {errors.password && errors.password.type === 'minLength' && (
+              <Text style={{ color: '#FF0000' }}>
+                パスワードは6文字以上設定してください。
+              </Text>
+            )}
+          </View>
 
-      <Text>パスワード(確認用)*</Text>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-            onChange={() => setPaswordErr(false)}
-            secureTextEntry={true}
+          <Text>パスワード(確認用)*</Text>
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                value={value}
+                onChange={() => setPaswordErr(false)}
+                secureTextEntry={true}
+              />
+            )}
+            name='passwordConfirm'
+            rules={{ required: true, minLength: 6 }}
+            defaultValue=''
           />
-        )}
-        name='passwordConfirm'
-        rules={{ required: true, minLength: 6 }}
-        defaultValue=''
-      />
-      <View style={styles.errContainer}>
-        {errors.passwordConfirm &&
-          errors.passwordConfirm.type === 'required' && (
-            <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
-          )}
-        {passwordErr && (
-          <Text style={{ color: '#FF0000' }}>パスワードが違います。</Text>
-        )}
-      </View>
+          <View style={styles.errContainer}>
+            {errors.passwordConfirm &&
+              errors.passwordConfirm.type === 'required' && (
+                <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
+              )}
+            {passwordErr && (
+              <Text style={{ color: '#FF0000' }}>パスワードが違います。</Text>
+            )}
+          </View>
 
-      <Button
-        title='新規登録'
-        onPress={handleSubmit(onSubmit)}
-        color='#f194ff'
-      />
-      <TouchableOpacity
-        style={{ marginTop: 10 }}
-        onPress={() => navigation.navigate('signIn')}
-      >
-        <Text>アカウントを既に持っていますか？</Text>
-      </TouchableOpacity>
-    </View>
+          <Button
+            title='新規登録'
+            onPress={handleSubmit(onSubmit)}
+            color='#f194ff'
+          />
+          <TouchableOpacity
+            style={{ marginTop: 10 }}
+            onPress={() => navigation.navigate('signIn')}
+          >
+            <Text>アカウントを既に持っていますか？</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
