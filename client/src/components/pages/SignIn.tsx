@@ -6,6 +6,7 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -34,14 +35,18 @@ type Props = {
 export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [signInErr, setSignInErr] = useState(false);
+  const [loagind, setLoading] = useState(true);
   const { authDispatch } = useContext(AuthContext);
   const onSubmit = async ({ email, password }: FormData) => {
-      // fetch('https://frozen-bastion-73398.herokuapp.com/user/signin', {
-      fetch('http://localhost:8000/user/signin', {
+    setLoading(false)
+    // fetch('https://frozen-bastion-73398.herokuapp.com/user/signin', {
+    // fetch('http://localhost:8000/user/signin', {
+    fetch('http://192.168.0.22:8000/user/signin', {
       method: 'POST',
       headers: {
         // 'Access-Control-Allow-Origin':'https://frozen-bastion-73398.herokuapp.com',
-        'Access-Control-Allow-Origin':'http://localhost:8000/',
+        // 'Access-Control-Allow-Origin':'http://localhost:8000/',
+        'Access-Control-Allow-Origin': 'http://192.168.0.22:8000/',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -51,6 +56,7 @@ export default function SignIn({ navigation }: Props) {
     })
       .then(res => res.json())
       .then(async data => {
+        setLoading(true)
         if (data.token) {
           await AsyncStorage.setItem('token', data.token);
           authDispatch({ type: 'SIGNIN', id: email, token: data.token });
@@ -114,12 +120,15 @@ export default function SignIn({ navigation }: Props) {
           <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
         )}
       </View>
-
-      <Button
-        title='ログイン'
-        onPress={handleSubmit(onSubmit)}
-        color='#f194ff'
-      />
+      {loagind ? (
+        <Button
+          title='ログイン'
+          onPress={handleSubmit(onSubmit)}
+          color='#f194ff'
+        />
+      ) : (
+        <ActivityIndicator />
+      )}
       <TouchableOpacity
         style={{ marginTop: 10 }}
         onPress={() => navigation.navigate('signUp')}

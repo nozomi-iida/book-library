@@ -1,7 +1,11 @@
 import { createContext } from 'react'
 
-const initialState = {
-  
+const initialLoginState = {
+  isLoading: true,
+  email: '',
+  username: '',
+  image: '',
+  userToken: '',
 }
 
-export const AuthContext = createContext<any>(null);
+export const AuthContext = createContext<any>(initialLoginState);

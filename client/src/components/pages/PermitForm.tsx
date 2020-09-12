@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
 import { useDispatch } from 'react-redux';
 import { updateBook } from '../../actions/book';
-import { fetchUser } from '../../actions/user';
 import { IBook } from '../../types/book';
 import { RouteProp } from '@react-navigation/native';
 

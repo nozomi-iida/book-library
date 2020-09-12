@@ -29,6 +29,7 @@ const initialLoginState = {
   isLoading: true,
   email: '',
   username: '',
+  image: '',
   userToken: '',
 }
 
@@ -38,7 +39,7 @@ export default (prevState=initialLoginState, action: IAction) => {
       return {
         ...prevState,
         userToken: action.token,
-        isLoading: false,
+        isLoading: true,
       }
     case 'SIGNIN':
       return {

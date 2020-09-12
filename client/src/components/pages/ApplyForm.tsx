@@ -35,7 +35,8 @@ export default function ApplyForm({ navigation }: Props) {
       try {
         const { data } = await axios.get(
           // 'https://frozen-bastion-73398.herokuapp.com/user',
-          'http://localhost:8000/user',
+          // 'http://localhost:8000/user',
+          'http://192.168.0.22:8000/user',
           {
             headers: {
               Authorization: 'Bearer ' + token,
@@ -61,7 +62,7 @@ export default function ApplyForm({ navigation }: Props) {
       url,
       status: '申請中',
       review: 1,
-      affiliateUrl: '',
+      affiliateUrl: url,
     };
     dispatch(addBook(book));
     navigation.navigate('apply');

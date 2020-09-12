@@ -6,16 +6,16 @@ import { useSelector } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { IState } from '../../stores/reduxStore';
 import { AirbnbRating } from 'react-native-ratings';
+import AddIcon from '../atoms/AddIcon';
 
 type RootsStackParamList = {
   applyForm: undefined;
   detail: { book: IBook } | undefined;
-  signIn: undefined;
 };
 
 type ScreenNavigationProps = StackNavigationProp<
   RootsStackParamList,
-  'applyForm' | 'detail' | 'signIn'
+  'applyForm' | 'detail'
 >
 
 type Props = {
@@ -33,7 +33,7 @@ export default function Read({navigation}: Props) {
   })
 
   return (
-    <View>
+    <View style={{height: '100%'}}>
       <FlatList
         data={readBooks}
         keyExtractor={item => item._id}
@@ -54,6 +54,7 @@ export default function Read({navigation}: Props) {
           </TouchableOpacity>
         )}
       />
+      <AddIcon navigation={navigation}/>
     </View>
   );
 }

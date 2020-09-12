@@ -1,8 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const bodyparser = require('body-parser');
 const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 require('dotenv').config(); //dotenvを適用して、環境変数の値を取得する
 
@@ -27,7 +29,6 @@ require('./models/user');
 
 const AuthRoutes = require('./routes/authRoutes');
 const BookRoutes = require('./routes/bookRoutes');
-app.use(bodyparser.json());
 app.use('/user', AuthRoutes);
 app.use('/book', BookRoutes);
 

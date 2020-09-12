@@ -17,16 +17,9 @@ export default function TabScreen() {
       <Tab.Screen
         name='apply'
         options={{
-          title: '申請',
+          title: '読みたい本',
         }}
         component={Apply}
-      />
-      <Tab.Screen
-        name='permit'
-        options={{
-          title: '許可',
-        }}
-        component={Permit}
       />
       <Tab.Screen
         name='read'

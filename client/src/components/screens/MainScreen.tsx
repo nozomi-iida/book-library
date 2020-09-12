@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import TabScreen from './TabScreen';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { DrawerActions } from '@react-navigation/native';
 import ApplyForm from '../pages/ApplyForm';
@@ -21,11 +21,12 @@ export default ({ navigation }: DrawerContentComponentProps) => {
   const { loginState, authDispatch } = useContext(AuthContext);
   const Boiler = async () => {
     const token = await AsyncStorage.getItem('token');
-    if (token) {
+    if(token) {
       try {
         const { data } = await axios.get(
           // 'https://frozen-bastion-73398.herokuapp.com/user',
-          'http://localhost:8000/user',
+          // 'http://localhost:8000/user',
+          'http://192.168.0.22:8000/user',
           {
             headers: {
               Authorization: 'Bearer ' + token,
@@ -51,20 +52,20 @@ export default ({ navigation }: DrawerContentComponentProps) => {
         options={{
           title: 'CV Library',
           headerLeft: () => (
-            <>
-              {loginState.userToken && (
-                <View style={{ marginLeft: 10 }}>
-                  <Icon.Button
-                    name='menuunfold'
-                    onPress={() =>
-                      navigation.dispatch(DrawerActions.toggleDrawer())
-                    }
-                    iconStyle={{ margin: 'auto', color: '#000' }}
-                    style={{ backgroundColor: '#fff' }}
-                  />
-                </View>
+            <View style={{ marginLeft: 10 }}>
+              {loginState.userToken ? (
+                <Icon.Button
+                  name='menuunfold'
+                  onPress={() =>
+                    navigation.dispatch(DrawerActions.toggleDrawer())
+                  }
+                  iconStyle={{ margin: 'auto', color: '#000' }}
+                  style={{ backgroundColor: '#fff' }}
+                />
+              ) : (
+                <Text></Text>
               )}
-            </>
+            </View>
           ),
         }}
       />
@@ -102,6 +103,13 @@ export default ({ navigation }: DrawerContentComponentProps) => {
           title: '読了',
         }}
         component={ReadForm}
+      />
+      <Stack.Screen
+        name='auth'
+        options={{
+          title: 'ログイン',
+        }}
+        component={AuthScreen}
       />
     </Stack.Navigator>
   );

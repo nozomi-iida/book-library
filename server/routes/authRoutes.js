@@ -4,7 +4,7 @@ const requireToken = require('../middleware/requireToken');
 const router = require('express').Router();
 
 router.get('/', requireToken, (req, res) => {
-  res.send({ email: req.user.email, username: req.user.username });
+  res.send({ email: req.user.email, username: req.user.username, image: req.user.image });
 })
 router.post('/signup', SignUpAuth)
 router.post('/signin', SignInAuth)

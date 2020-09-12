@@ -8,23 +8,22 @@ export default function DrawerContent({
   navigation,
 }: DrawerContentComponentProps) {
   const { loginState, authContext } = useContext(AuthContext);
-  console.log(loginState);
   const onsignOutPress = () => {
     authContext.signOut();
     navigation.dispatch(DrawerActions.closeDrawer());
   };
   return (
     <View>
-      <View style={{ flexDirection: 'row', marginTop: 15,  paddingLeft: 20, }}>
+      <View style={{ flexDirection: 'row', marginTop: 15, paddingLeft: 20 }}>
         <Avatar
           size='medium'
           rounded
-          containerStyle={{borderColor: '#EEEEEE', borderStyle: 'solid', borderWidth: 1}}
-          source={{
-            uri: loginState.image
-              ? loginState.image
-              : require('../../images/noImage.jpeg'),
+          containerStyle={{
+            borderColor: '#EEEEEE',
+            borderStyle: 'solid',
+            borderWidth: 1,
           }}
+          source={loginState.image ? { uri: loginState.image } : require('../../images/noImage.jpeg')}
         />
         <View style={{ marginLeft: 15, alignSelf: 'center' }}>
           <Text style={styles.title}>{loginState.username}</Text>

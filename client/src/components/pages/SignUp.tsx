@@ -78,7 +78,8 @@ export default function SignUp({ navigation }: Props) {
   }: FormData) => {
     if (password === passwordConfirm) {
       // fetch('https://frozen-bastion-73398.herokuapp.com/user/signup', {
-      fetch('http://localhost:8000/user/signup', {
+      // fetch('http://localhost:8000/user/signup', {
+      fetch('http://192.168.0.22:8000/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +93,6 @@ export default function SignUp({ navigation }: Props) {
       })
         .then(res => res.json())
         .then(async data => {
-          console.log(data);
           try {
             await AsyncStorage.setItem('token', data.token);
             authDispatch({ type: 'SIGNIN', id: email, token: data.token });
@@ -128,21 +128,22 @@ export default function SignUp({ navigation }: Props) {
         )}
       </View>
       <Text>画像*</Text>
-        <Text style={{textAlign: 'center'}}>
-          <TouchableOpacity onPress={_pickImage} >
-            <Image
-              source={{
-                uri: image ? image : require('../../images/noImage.jpeg'),
-              }}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 100,
-                backgroundColor: '#fff',
-              }}
-            />
-          </TouchableOpacity>
-        </Text>
+      <View style={{ alignItems: 'center' }}>
+        <TouchableOpacity onPress={_pickImage}>
+          <Image
+            // source={{
+            //   uri: image ? image : require('../../images/noImage.jpeg'),
+            // }}
+            source={image ? {uri: image } : require('../../images/noImage.jpeg')}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 100,
+              backgroundColor: '#fff',
+            }}
+          />
+        </TouchableOpacity>
+      </View>
       <Text>メールアドレス*</Text>
       <Controller
         control={control}
