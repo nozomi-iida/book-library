@@ -5,7 +5,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { IBook } from '../../types/book';
 import { AuthContext } from '../../stores/authStore';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/AntDesign';
 import asinMatcher from 'asin-matcher';
 
 type RootStackParamList = {
@@ -13,13 +12,14 @@ type RootStackParamList = {
   edit: { book: IBook };
   permitForm: { book: IBook };
   readForm: { book: IBook };
+  bookInfo: { book: IBook; tag: 'detail' | 'reason' };
 };
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'apply'>;
 
 type ScreeenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'edit' | 'permitForm' | 'readForm'
+  'edit' | 'permitForm' | 'readForm' | 'bookInfo'
 >;
 
 interface Props {
@@ -28,7 +28,7 @@ interface Props {
 }
 
 export default function BookDetail({ navigation, route }: Props) {
-  const [book, setBook] = useState<IBook>(route.params.book);
+  const book = route.params.book;
   const date = new Date(route.params.book.createdAt);
   const dateMonth = date.getMonth() + 1;
   const dateDate = date.getDate();
@@ -38,24 +38,50 @@ export default function BookDetail({ navigation, route }: Props) {
   return (
     <View style={styles.container}>
       {book && (
-        <View style={styles.card}>
-          <Image
-            source={{
-              uri: `http://images-jp.amazon.com/images/P//${asin}.09.LZZZZZZZ`,
-            }}
-            style={{ width: 210, height: 270 }}
-          />
-          <Text style={styles.text}>作成者: {book.username}</Text>
-          <Text style={styles.text}>
-            作成日: {dateYear}-{dateMonth}-{dateDate}
-          </Text>
-          <Text style={styles.text}>タイトル: {book.title}</Text>
-          <Text style={styles.text}>本の簡単な詳細: {book.description}</Text>
-          <Text style={styles.text}>読みたい理由: {book.reason}</Text>
+        <>
+          <View
+            style={{ display: 'flex', flexDirection: 'row', marginBottom: 20 }}
+          >
+            <Image
+              source={{
+                uri: `http://images-jp.amazon.com/images/P//${asin}.09.LZZZZZZZ`,
+              }}
+              style={{ width: '40%', height: 180 }}
+            />
+            <View style={{ width: '60%', marginLeft: 10 }}>
+              <Text style={styles.title}>{book.title}</Text>
+              <Text style={styles.text}>作成者: {book.username}</Text>
+              <Text style={styles.text}>
+                作成日: {dateYear}-{dateMonth}-{dateDate}
+              </Text>
+            </View>
+          </View>
           <Button
             onPress={() => Linking.openURL(book.affiliateUrl)}
             title='本を購入する'
           />
+          <Text style={styles.detail}>本の簡単な詳細</Text>
+          <Text numberOfLines={4} style={styles.info}>
+            {book.description}
+          </Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('bookInfo', { book: book, tag: 'detail' })
+            }
+          >
+            <Text style={{ textAlign: 'right' }}>全文を読む</Text>
+          </TouchableOpacity>
+          <Text style={styles.detail}>読みたい理由: </Text>
+          <Text numberOfLines={4} style={styles.info}>
+            {book.reason}
+          </Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('bookInfo', { book: book, tag: 'reason' })
+            }
+          >
+            <Text style={{ textAlign: 'right' }}>全文を読む</Text>
+          </TouchableOpacity>
           {loginState.username === book.username && (
             <>
               <View style={{ marginBottom: 10 }}>
@@ -66,13 +92,14 @@ export default function BookDetail({ navigation, route }: Props) {
               </View>
             </>
           )}
-          {book.status === '申請中' && (
-            <Button
-              title='読了画面へ'
-              onPress={() => navigation.navigate('readForm', { book: book })}
-            />
-          )}
-        </View>
+          {book.status === '申請中' &&
+            loginState.username === book.username && (
+              <Button
+                title='読了画面へ'
+                onPress={() => navigation.navigate('readForm', { book: book })}
+              />
+            )}
+        </>
       )}
     </View>
   );
@@ -80,9 +107,8 @@ export default function BookDetail({ navigation, route }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
   card: {
     borderRadius: 6,
@@ -95,12 +121,27 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     marginVertical: 4,
     width: 290,
-    paddingHorizontal: 40,
+    // paddingHorizontal: 40,
     paddingVertical: 20,
+  },
+  title: {
+    fontSize: 18,
+    marginBottom: 40,
+    fontWeight: 'bold',
   },
   text: {
     marginBottom: 10,
     fontSize: 18,
+    color: '#666666',
+  },
+  info: {
+    marginBottom: 10,
+    fontSize: 18,
+  },
+  detail: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 30,
   },
   fixToText: {
     flexDirection: 'row',

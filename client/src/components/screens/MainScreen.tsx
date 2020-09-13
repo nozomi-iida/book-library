@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import AuthScreen from './AuthScreen';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
+import BookInfo from '../pages/BookInfo';
 
 const Stack = createStackNavigator();
 
@@ -103,6 +104,13 @@ export default ({ navigation }: DrawerContentComponentProps) => {
           title: '読了',
         }}
         component={ReadForm}
+      />
+      <Stack.Screen
+        name='bookInfo'
+        options={{
+          title: '作品紹介',
+        }}
+        component={BookInfo}
       />
       <Stack.Screen
         name='auth'
