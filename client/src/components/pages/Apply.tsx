@@ -26,7 +26,7 @@ export default function Apply({ navigation }: Props) {
   const books = useSelector((state: IState) => state.books);
   const applyBooks: IBook[] = [];
   books.map((book: IBook) => {
-    if (book.status === '申請中') {
+    if (book.status === '読書中') {
       applyBooks.push(book);
     }
   });

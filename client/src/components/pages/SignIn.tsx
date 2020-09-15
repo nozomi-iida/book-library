@@ -35,7 +35,7 @@ type Props = {
 export default function SignIn({ navigation }: Props) {
   const { control, handleSubmit, errors } = useForm<FormData>();
   const [signInErr, setSignInErr] = useState(false);
-  const [loagind, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const { authDispatch } = useContext(AuthContext);
   const onSubmit = async ({ email, password }: FormData) => {
     setLoading(false)
@@ -56,7 +56,6 @@ export default function SignIn({ navigation }: Props) {
     })
       .then(res => res.json())
       .then(async data => {
-        setLoading(true)
         if (data.token) {
           await AsyncStorage.setItem('token', data.token);
           authDispatch({ type: 'SIGNIN', id: email, token: data.token });
@@ -64,11 +63,12 @@ export default function SignIn({ navigation }: Props) {
           console.log(data.error);
           setSignInErr(true);
         }
+        setLoading(true)
       });
   };
 
   return (
-    <View>
+    <View style={{paddingHorizontal: 10}}>
       <View style={styles.errContainer}>
         {signInErr && (
           <Text style={{ color: '#FF0000' }}>
@@ -120,7 +120,7 @@ export default function SignIn({ navigation }: Props) {
           <Text style={{ color: '#FF0000' }}>書き忘れています。</Text>
         )}
       </View>
-      {loagind ? (
+      {loading ? (
         <Button
           title='ログイン'
           onPress={handleSubmit(onSubmit)}

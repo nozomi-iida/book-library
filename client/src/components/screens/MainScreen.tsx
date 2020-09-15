@@ -7,7 +7,6 @@ import { DrawerActions } from '@react-navigation/native';
 import ApplyForm from '../pages/ApplyForm';
 import EditForm from '../pages/EditForm';
 import BookDetail from '../pages/BookDetail';
-import PermitForm from '../pages/PermitForm';
 import ReadForm from '../pages/ReadForm';
 import { AuthContext } from '../../stores/authStore';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -90,13 +89,6 @@ export default ({ navigation }: DrawerContentComponentProps) => {
           title: '詳細',
         }}
         component={BookDetail}
-      />
-      <Stack.Screen
-        name='permitForm'
-        options={{
-          title: '許可',
-        }}
-        component={PermitForm}
       />
       <Stack.Screen
         name='readForm'

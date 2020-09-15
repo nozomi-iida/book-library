@@ -1,4 +1,4 @@
-const { AddApply, GetApply, DetailBook, DeleteBook, UpdateBook, PermitBook, ReadBook } = require('../controllers/book');
+const { AddApply, GetApply, DetailBook, DeleteBook, UpdateBook, ReadBook } = require('../controllers/book');
 const router = require('express').Router();
 
 router.post('/addApply', AddApply);

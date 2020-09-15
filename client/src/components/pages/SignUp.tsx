@@ -9,7 +9,8 @@ import {
   Image,
   Platform,
   KeyboardAvoidingView,
-  ScrollView,
+  ScrollView, 
+  ActivityIndicator
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -44,7 +45,7 @@ export default function SignUp({ navigation }: Props) {
   const [passwordErr, setPaswordErr] = useState(false);
   const { authDispatch } = useContext(AuthContext);
   const [image, setImage] = useState('');
-  console.log(image);
+  const [loading, setLoading] = useState(true);
   const getPermissionAsync = async () => {
     if (Platform.OS !== 'web') {
       const { status } = await askAsync(CAMERA_ROLL);
@@ -78,6 +79,7 @@ export default function SignUp({ navigation }: Props) {
     password,
     passwordConfirm,
   }: FormData) => {
+    setLoading(false)
     if (password === passwordConfirm) {
       // fetch('https://frozen-bastion-73398.herokuapp.com/user/signup', {
       // fetch('http://localhost:8000/user/signup', {
@@ -101,6 +103,7 @@ export default function SignUp({ navigation }: Props) {
           } catch (error) {
             console.log('error:', error);
           }
+          setLoading(true)
         });
     } else {
       setPaswordErr(true);
@@ -108,7 +111,7 @@ export default function SignUp({ navigation }: Props) {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
+    <KeyboardAvoidingView style={{paddingHorizontal: 10}} behavior='padding'>
       <ScrollView>
         <View>
           <Text>名前*</Text>
@@ -232,12 +235,16 @@ export default function SignUp({ navigation }: Props) {
               <Text style={{ color: '#FF0000' }}>パスワードが違います。</Text>
             )}
           </View>
+          {loading ? (
+            <Button
+              title='新規登録'
+              onPress={handleSubmit(onSubmit)}
+              color='#f194ff'
+            />
 
-          <Button
-            title='新規登録'
-            onPress={handleSubmit(onSubmit)}
-            color='#f194ff'
-          />
+          ) : (
+            <ActivityIndicator />
+          )}
           <TouchableOpacity
             style={{ marginTop: 10 }}
             onPress={() => navigation.navigate('signIn')}

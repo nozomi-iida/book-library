@@ -10,16 +10,15 @@ import asinMatcher from 'asin-matcher';
 type RootStackParamList = {
   apply: { book: IBook };
   edit: { book: IBook };
-  permitForm: { book: IBook };
   readForm: { book: IBook };
-  bookInfo: { book: IBook; tag: 'detail' | 'reason' };
+  bookInfo: { book: IBook };
 };
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'apply'>;
 
 type ScreeenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'edit' | 'permitForm' | 'readForm' | 'bookInfo'
+  'edit'  | 'readForm' | 'bookInfo'
 >;
 
 interface Props {
@@ -66,7 +65,7 @@ export default function BookDetail({ navigation, route }: Props) {
           </Text>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('bookInfo', { book: book, tag: 'detail' })
+              navigation.navigate('bookInfo', { book: book })
             }
           >
             <Text style={{ textAlign: 'right' }}>全文を読む</Text>
@@ -75,13 +74,6 @@ export default function BookDetail({ navigation, route }: Props) {
           <Text numberOfLines={4} style={styles.info}>
             {book.reason}
           </Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('bookInfo', { book: book, tag: 'reason' })
-            }
-          >
-            <Text style={{ textAlign: 'right' }}>全文を読む</Text>
-          </TouchableOpacity>
           {loginState.username === book.username && (
             <>
               <View style={{ marginBottom: 10 }}>
@@ -92,7 +84,7 @@ export default function BookDetail({ navigation, route }: Props) {
               </View>
             </>
           )}
-          {book.status === '申請中' &&
+          {book.status === '読書中' &&
             loginState.username === book.username && (
               <Button
                 title='読了画面へ'

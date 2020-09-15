@@ -4,7 +4,7 @@ export interface IBook {
   description: string;
   reason: string;
   review: number;
-  status: '申請中' | '読了';
+  status: '読書中' | '読了';
   title: string;
   updatedAt: string;
   url: string;

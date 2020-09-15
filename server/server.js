@@ -36,6 +36,6 @@ const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
   console.log(
-    `turn on server: http://192.168.0.22:${process.env.PORT || 8000}`
+    `turn on server: http://localhost:${process.env.PORT || 8000}`
   );
 });
